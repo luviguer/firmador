@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Introduce datos</title>
+    <style>
+        textarea{
+            min-width: 80%; 
+            max-width: 95%; 
+            min-height: 250px; 
+            display: block; 
+            border-bottom-style: solid;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function visibilidadContrasena() {
+            var contrasena = document.getElementById("contrasena");
+            if (contrasena.type === "password") {
+                contrasena.type = "text";
+            } else {
+                contrasena.type = "password";
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <form action="#" th:action="@{/form}" method="POST" enctype="multipart/form-data">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Alias: </td>
+                    <td>
+                        <select name="seleccion" id="seleccion">
+                            <option value="1">1</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Contraseña: </td>
+                    <td>
+                        <input type="password" name="contrasena" id="contrasena">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="checkbox" name="check" id="check" onclick="visibilidadContrasena()"> Mostrar contraseña
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" name="archivo" id="archivo" th:value="${archivo}">
+        <textarea name="json" id="json" placeholder="Introduce el JSON-LD"></textarea>
+
+        <button type="submit">Crear JWS</button>
+    </form>
+</body>
+
+</html>

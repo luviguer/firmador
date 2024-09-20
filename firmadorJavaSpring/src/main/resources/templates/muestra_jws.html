@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Muestra</title>
+    <style>
+        pre{
+            width:100%; 
+            white-space:pre-wrap; 
+            background-color:#f5f5f5;
+            border: 1px solix #ccc; 
+            padding:10px; 
+            box-sizing:border-box;
+            font-family:'Courier New', Courier, monospace; 
+            overflow-x: auto
+        }
+    </style>
+    <script>
+        // Función para copiar el contenido del JWS al portapapeles de forma automática
+        function copiarPortapapeles(){
+            var aux = document.createElement('textarea');
+            aux.value = document.getElementById('json').textContent;
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+            alert("JSON copiado al portapapeles");
+        }
+        // Función para formatear el JSON-LD generado con la firma
+        function formatearJSON() {
+            var campoPre = document.getElementById('json');
+            if (campoPre) {
+                try {
+                    var datosJson = JSON.parse(campoPre.textContent);
+                    var jsonFormateado = JSON.stringify(datosJson, null, 2);
+                    campoPre.textContent=jsonFormateado;
+                } catch (e) {
+                    console.error("No se ha podido parsear el JSON ");
+                }
+            }
+        }
+        document.addEventListener("DOMContentLoaded", formatearJSON);
+    </script>
+</head>
+
+<body>
+    <h1>JWS generado:</h1>
+    <pre id="json" th:text="${data}"></pre>
+    <button onclick="copiarPortapapeles()">Copiar contenido JSON</button>
+
+</body>
+
+</html>
+
+

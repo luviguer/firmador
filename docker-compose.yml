@@ -1,0 +1,13 @@
+version: '1.0'
+services:
+  spring:
+    container_name: firmador
+    build: firmadorJavaSpring
+    ports:
+      - "8443:8443"
+  api:
+    container_name: api
+    build: JSFirmador
+    ports:
+      - "3000:3000"
+ 
