@@ -97,7 +97,7 @@ public class ApplicationController {
         @SuppressWarnings("deprecation")
         RequestBody body = RequestBody.create(mediaType, "pem= "+ URLEncoder.encode(pem)+" &json=" + URLEncoder.encode(json));
         Request request = new Request.Builder()
-                .url("https://sergio.arlabdevelopments.com:3000/jws")
+                .url("https://lucia.arlabdevelopments.com/:3000/jws")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
