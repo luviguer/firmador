@@ -10,7 +10,7 @@ import vcCtx from "./public/credentials_v1_context.json" with { type: "json" };
 import jwsCtx from "./public/jws2020_v1_context.json" with { type: "json" };
 import trustframeworkCtx from "./public/trustframework_context.json" with { type: "json" };
 
-let privateKey  = fs.readFileSync('public/privkey1.pem', 'utf8');
+let privateKey  = fs.readFileSync('public/privkey.pem', 'utf8');
 let certificate = fs.readFileSync('public/fullchain.pem', 'utf8');
 
 var credentials = {key: privateKey, cert: certificate};
