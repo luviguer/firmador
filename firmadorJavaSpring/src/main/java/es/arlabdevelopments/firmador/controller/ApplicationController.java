@@ -97,7 +97,7 @@ public class ApplicationController {
         @SuppressWarnings("deprecation")
         RequestBody body = RequestBody.create(mediaType, "pem= "+ URLEncoder.encode(pem)+" &json=" + URLEncoder.encode(json));
         Request request = new Request.Builder()
-                .url("https://lucia.arlabdevelopments.com/:3000/jws")
+                .url("https://lucia.arlabdevelopments.com:3000/jws")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
@@ -105,7 +105,7 @@ public class ApplicationController {
         try {
             response = client.newCall(request).execute();
         } catch (IOException e) {
-            logger.severe("Ha habido un error en al ejecución de la llamada al API");
+            logger.severe("ha habido un error en al ejecución de la llamada al API");
             throw new RuntimeException(e);
         }
         try {

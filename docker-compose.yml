@@ -11,4 +11,3 @@ services:
     build: JSFirmador
     ports:
       - "3000:3000"
- 
