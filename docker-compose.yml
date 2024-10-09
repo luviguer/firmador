@@ -1,13 +1,20 @@
-version: '3.0'
-
 services:
-  spring:
+  firmador:
     container_name: firmador
     build: firmadorJavaSpring
     ports:
       - "8443:8443"
+    environment:
+      - API_PROTOCOL=https
+      - API_HOST=lucia.arlabdevelopments.com
+      - API_PORT=3000
+      - API_URI=jws
+    volumes:
+      - ./keystore.p12:/app/keystore.p12:ro
   api:
     container_name: api
     build: JSFirmador
+    env_file:
+      - .env_api
     ports:
       - "3000:3000"

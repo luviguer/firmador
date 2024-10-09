@@ -1,6 +1,6 @@
 package es.arlabdevelopments.firmador.controller;
-
 import es.arlabdevelopments.firmador.Libreria;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -96,8 +96,9 @@ public class ApplicationController {
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");    
         @SuppressWarnings("deprecation")
         RequestBody body = RequestBody.create(mediaType, "pem= "+ URLEncoder.encode(pem)+" &json=" + URLEncoder.encode(json));
+        logger.info("URL API: " + System.getenv("API_PROTOCOL")+"://"+System.getenv("API_HOST")+":"+System.getenv("API_PORT")+"/"+System.getenv("API_URI"));
         Request request = new Request.Builder()
-                .url("https://lucia.arlabdevelopments.com:3000/jws")
+                .url(System.getenv("API_PROTOCOL")+"://"+System.getenv("API_HOST")+":"+System.getenv("API_PORT")+"/"+System.getenv("API_URI"))
                 .method("POST", body)
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
