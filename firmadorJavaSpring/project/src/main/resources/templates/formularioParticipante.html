@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Estilizado</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            background-color: #2e2885; /* Color púrpura de fondo */
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 50%;
+            padding: 20px;
+            background-color: #4f47c0; /* Fondo más claro para el formulario */
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: white;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-row div {
+            width: 48%;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .radio-group input {
+            margin-right: 10px;
+        }
+
+        .lrn-group {
+            background-color: #5a4ddf; /* Fondo diferente para la sección LRN */
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sendparticipant-button {
+            background-color: #9ae3e2; /* Color azul claro */
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e2885;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .sendparticipant-button:hover {
+            background-color: #82c9c8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Formulario Legal</h1>
+        <form action="#" th:action="@{/createParticipant}" method="POST" enctype="multipart/form-data">
+            <label for="legal-name">Legal name *</label>
+            <input type="text" id="legal-name" name="legal-name" required>
+
+            <!-- Sección de Legal Registration Number -->
+            <div class="lrn-group">
+                <label for="registration-number">Legal registration number (LRN) *</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="lrn-type" value="taxID" required> taxID</label>
+                    <label><input type="radio" name="lrn-type" value="EUID" required> EUID</label>
+                    <label><input type="radio" name="lrn-type" value="EORI" required> EORI</label>
+                    <label><input type="radio" name="lrn-type" value="vatID" required> vatID</label>
+                    <label><input type="radio" name="lrn-type" value="leiCode" required> leiCode</label>
+                </div>
+                <input type="text" id="registration-number" name="registration-number" required>
+
+                <!-- Sección de Credenciales Verificables -->
+                <div class="form-row">
+                    <div>
+                        <label for="verifiable-id">LRN Verifiable Credential ID *</label>
+                        <input type="text" id="verifiable-id" name="verifiable-id" required>
+                    </div>
+                    <div>
+                        <label for="credential-subject-id">LRN Credential Subject ID *</label>
+                        <input type="text" id="credential-subject-id" name="credential-subject-id" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Otras secciones -->
+            <div class="form-row">
+                <div>
+                    <label for="headquarter-address">Headquarter address (ISO 3166-2) *</label>
+                    <input type="text" id="headquarter-address" name="headquarter-address" value="BE-BRU" required>
+                </div>
+                <div>
+                    <label for="legal-address">Legal address (ISO 3166-2) *</label>
+                    <input type="text" id="legal-address" name="legal-address" value="BE-BRU" required>
+                </div>
+            </div>
+
+            <label for="parent-organization">Parent organization</label>
+            <input type="text" id="parent-organization" name="parent-organization">
+
+            <label for="sub-organization">Sub organization</label>
+            <input type="text" id="sub-organization" name="sub-organization">
+
+            <button type="submit" class="sendparticipant-button">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
