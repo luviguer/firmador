@@ -1,24 +1,57 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muestra</title>
     <style>
-        pre{
-            width:100%; 
-            white-space:pre-wrap; 
-            background-color:#f5f5f5;
-            border: 1px solix #ccc; 
-            padding:10px; 
-            box-sizing:border-box;
-            font-family:'Courier New', Courier, monospace; 
-            overflow-x: auto
+        body {
+            background-color: #2e1e83; /* Fondo coherente */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;    
+        }
+        h1 {
+            color: white; /* Color del título */
+            margin-bottom: 20px;
+            font-size: 2.5rem; /* Tamaño de fuente */
+            text-align: center;
+        }
+        pre {
+            width: 50%;
+            white-space: pre-wrap; 
+            background-color: #4f47c0; /* Fondo claro para el JSON */
+            border: 1px solid #ccc; 
+            padding: 20px; 
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace; 
+            overflow-x: auto;
+            color: #ffffff; /* Texto blanco */
+            border-radius: 10px; /* Bordes redondeados */
+            margin-bottom: 20px; /* Espaciado */
+        }
+        button {
+            background-color: #88e5d9; /* Color del botón */
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2e2885; /* Color de texto del botón */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 200px; /* Tamaño del botón */
+        }
+        button:hover {
+            background-color: #74c9bb; /* Color al pasar el ratón */
         }
     </style>
     <script>
-        // Función para copiar el contenido del JWS al portapapeles de forma automática
-        function copiarPortapapeles(){
+        function copiarPortapapeles() {
             var aux = document.createElement('textarea');
             aux.value = document.getElementById('json').textContent;
             document.body.appendChild(aux);
@@ -27,6 +60,7 @@
             document.body.removeChild(aux);
             alert("JSON copiado al portapapeles");
         }
+        
         // Función para formatear el JSON-LD generado con la firma
         function formatearJSON() {
             var campoPre = document.getElementById('json');
@@ -34,23 +68,19 @@
                 try {
                     var datosJson = JSON.parse(campoPre.textContent);
                     var jsonFormateado = JSON.stringify(datosJson, null, 2);
-                    campoPre.textContent=jsonFormateado;
+                    campoPre.textContent = jsonFormateado;
                 } catch (e) {
                     console.error("No se ha podido parsear el JSON ");
                 }
             }
         }
+        
         document.addEventListener("DOMContentLoaded", formatearJSON);
     </script>
 </head>
-
 <body>
     <h1>JWS generado:</h1>
     <pre id="json" th:text="${data}"></pre>
     <button onclick="copiarPortapapeles()">Copiar contenido JSON</button>
-
 </body>
-
 </html>
-
-

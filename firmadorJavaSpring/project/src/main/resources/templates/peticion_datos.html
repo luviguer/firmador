@@ -1,17 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Introduce datos</title>
     <style>
-        textarea{
-            min-width: 80%; 
-            max-width: 95%; 
-            min-height: 250px; 
-            display: block; 
-            border-bottom-style: solid;
+        body {
+            background-color: #2e1e83;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 50%;  /* Ancho del contenedor */
+            padding: 20px;
+            background-color: #4f47c0; /* Fondo más claro para el formulario */
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+        label, input, select, textarea {
+            display: block;
+            width: 100%;
             margin-bottom: 10px;
+        }
+        input, select, textarea {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background: #e5e5e5;
+        }
+        input[type="password"] {
+            background: #ffffff;
+        }
+        button {
+            background-color: #88e5d9; /* Color azul claro */
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e2885;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #74c9bb; /* Color de hover */
         }
     </style>
     <script>
@@ -23,41 +68,36 @@
                 contrasena.type = "password";
             }
         }
-
     </script>
 </head>
-
 <body>
-    <form action="#" th:action="@{/form}" method="POST" enctype="multipart/form-data">
-        <table>
-            <tbody>
-                <tr>
-                    <td>Alias: </td>
-                    <td>
-                        <select name="seleccion" id="seleccion">
-                            <option value="1">1</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Contraseña: </td>
-                    <td>
-                        <input type="password" name="contrasena" id="contrasena">
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="checkbox" name="check" id="check" onclick="visibilidadContrasena()"> Mostrar contraseña
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <input type="hidden" name="archivo" id="archivo" th:value="${archivo}">
-        <textarea name="json" id="json" placeholder="Introduce el JSON-LD"></textarea>
-
-        <button type="submit">Crear JWS</button>
-    </form>
+    <div class="container">
+        <form action="#" th:action="@{/uploadNuevo}" method="POST" enctype="multipart/form-data">
+            <h2>Formulario Legal</h2>
+            <div class="form-group">
+                <label for="archivo">Archivo:</label>
+                <input type="file" name="archivo" id="archivo" required />
+            </div>
+            <div class="form-group">
+                <label for="seleccion">Alias:</label>
+                <select name="seleccion" id="seleccion" required>
+                    <option value="1">1</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" name="contrasena" id="contrasena" required />
+            </div>
+            <div class="form-group">
+                <input type="checkbox" name="check" id="check" onclick="visibilidadContrasena()" />
+                <label for="check"> Mostrar contraseña</label>
+            </div>
+            <div class="form-group">
+                <label for="json">Introduce el JSON-LD:</label>
+                <textarea name="json" id="json" placeholder="Introduce el JSON-LD" required></textarea>
+            </div>
+            <button type="submit">Crear JWS</button>
+        </form>
+    </div>
 </body>
-
 </html>
