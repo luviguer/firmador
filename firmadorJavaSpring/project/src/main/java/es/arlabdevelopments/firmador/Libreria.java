@@ -10,11 +10,7 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import java.util.logging.Logger;
-
 public class Libreria {
-
-    private static final Logger logger = Logger.getLogger(Libreria.class.getName());
     /**
      * Metodo para cifrar una string a algoritmo SHA-256
      *
@@ -125,41 +121,16 @@ public class Libreria {
      * correcta o no referenciase a una clave privada devolvera <b>null</b>
      */
     public static Key clave(String alias, String contrasena, File cert) {
-
         Key k = null;
-        try {
-            // Log del inicio de procesamiento
-            logger.info("Iniciando la carga del keystore.");
-
-            KeyStore ks = certificadosSistema();
-            ks.load(null, null); // Si este método no necesita parámetros, asegúrate de que es lo que deseas
-            
-            logger.info("Keystore cargado correctamente.");
-
-            // Intentar obtener la clave
+        try (FileInputStream fis = new FileInputStream(cert)) {
+            KeyStore ks = KeyStore.getInstance("PKCS12");
+            ks.load(fis, null);
             k = ks.getKey(alias, contrasena.toCharArray());
-            if (k == null) {
-                logger.info("No se encontró la clave para el alias: " + alias);
-                return null;
-            }
-            logger.info("Clave obtenida para el alias: " + alias);
-
-            // Verificar el tipo de clave
-            if (!(k instanceof PrivateKey)) {
-                logger.info("La clave obtenida no es una instancia de PrivateKey.");
-                return null;
-            }
-
-            logger.info("La clave es una instancia de PrivateKey.");
-
+            if (!(k instanceof PrivateKey)) return null;
         } catch (Exception e) {
-            logger.info("Ocurrió un error al intentar acceder a la clave: " + e.getMessage());
-            e.printStackTrace();  // Imprime la traza completa del error para más detalles
+            e.printStackTrace();
         }
-
         return k;
-
-
     }
 
     /**

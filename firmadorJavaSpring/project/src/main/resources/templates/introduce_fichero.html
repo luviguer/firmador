@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Firmador Gaia-X Arlab</title>
+</head>
+<body>
+<h1>Firmador</h1>
+
+<h2>Selecciona tu fichero que contiene el certificado</h2>
+<form action="#" th:action="@{/upload}" method="POST" enctype="multipart/form-data">
+    <input type="file" name="archivo" id="archivo">
+    <button type="submit" >Generar JWS</button>
+</form>
+</body>
+</html>
