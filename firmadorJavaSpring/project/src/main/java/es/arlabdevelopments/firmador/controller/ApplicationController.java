@@ -21,10 +21,18 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
+import java.util.ArrayList;
+
 
 @Controller
 public class ApplicationController {
+
     Logger logger = Logger.getLogger("Pruebas SpringBoot");
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/")
     public String handleInit() {
@@ -34,17 +42,66 @@ public class ApplicationController {
     
 
     @GetMapping("/createParticipant")
-    public String handleIni() {
+    public String handleParticipant() {
         return "formularioParticipante";
     }
 
-    @GetMapping("/intro")
-    public String handleIn() {
-        return "peticion_datos";
+
+
+
+    @PostMapping("/data")
+    public String handleForm(
+            @RequestParam("legal-name") String legalName,
+            @RequestParam("registration-number") String registrationNumber,
+            @RequestParam("headquarter-address") String headquarterAddress,
+            @RequestParam("legal-address") String legalAddress,
+            @RequestParam("parent-organization") String parentOrganization,
+            @RequestParam("sub-organization") String subOrganization,
+            Model model) throws IOException {
+        
+
+        Map<String, Object> jsonResponse = new HashMap<>();
+
+
+
+        jsonResponse.put("@context", new String[]{
+                "https://www.w3.org/2018/credentials/v1",
+                "https://w3id.org/security/suites/jws-2020/v1",
+                "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+        });
+        jsonResponse.put("type", new String[]{"VerifiableCredential"});
+        jsonResponse.put("id", "https://arlabdevelopments.com/.well-known/ArsysParticipant.json");
+        jsonResponse.put("issuer", "did:web:arlabdevelopments.com");
+        jsonResponse.put("issuanceDate", Instant.now().toString());
+        Map<String, Object> credentialSubject = new HashMap<>();
+        credentialSubject.put("type", "gx:LegalParticipant");
+        credentialSubject.put("gx:legalName", legalName);
+        Map<String, Object> legalRegistrationNumber = new HashMap<>();
+        legalRegistrationNumber.put("id", "https://arlabdevelopments.com/.well-known/legalRegistrationNumberVC.json");
+        credentialSubject.put("gx:legalRegistrationNumber", legalRegistrationNumber);
+        Map<String, String> headquarterAddressInfo = new HashMap<>();
+        headquarterAddressInfo.put("gx:countrySubdivisionCode", headquarterAddress);
+        credentialSubject.put("gx:headquarterAddress", headquarterAddressInfo);
+        Map<String, String> legalAddressInfo = new HashMap<>();
+        legalAddressInfo.put("gx:countrySubdivisionCode", legalAddress);
+        credentialSubject.put("gx:legalAddress", legalAddressInfo);
+        credentialSubject.put("id", "https://arlabdevelopments.com/.well-known/ArsysParticipant.json");
+        jsonResponse.put("credentialSubject", credentialSubject);
+        
+        String jsonResponseString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonResponse);       
+        logger.info("Valor de el json: " + jsonResponseString);
+
+        model.addAttribute("jsonResponse", jsonResponseString);
+
+        return "peticionDatos"; 
+      
     }
 
 
-    @PostMapping("/uploadNuevo")
+
+
+
+    @PostMapping("/upload")
     public String handleUpload(
         @RequestParam("archivo") MultipartFile file,
         @RequestParam("seleccion") String alias,
@@ -52,39 +109,34 @@ public class ApplicationController {
         @RequestParam("json") String json,
         Model model) throws IOException {
 
-    // Verificar que el archivo no esté vacío
-    if (file.isEmpty()) {
-        logger.info("El archivo no se ha subido correctamente.");
-       
-        
-    }
+            if (file.isEmpty()) {
+                logger.info("El archivo no se ha subido correctamente.");     
+                
+            }
+
+            File f = creaFichero(file);  
+
+            model.addAttribute("aliases", Libreria.comprobarAlias(f));
+
+            logger.info("Nombre del fichero: " + f.getName());
+            logger.info("Valor del alias: " + alias);
+            logger.info("Valor de la contraseña: " + contrasena);
+            logger.info("Contenido del fichero: " + Base64.getEncoder().encodeToString(Files.readAllBytes(f.toPath())));
+
+            String privateKey = "-----BEGIN PRIVATE KEY-----" +
+                    Base64.getEncoder().encodeToString(Libreria.clave(alias, contrasena, f).getEncoded()) + "-----END PRIVATE KEY-----";
+
+            logger.info("Valor de la clave privada: " + privateKey);
+            logger.info("Valor del json: " + json);
 
 
-    // Convierte el MultipartFile a File
-    File f = creaFichero(file);  // Asegúrate que este método funcione correctamente
+            String dev = httpPetition(privateKey, json);
+            model.addAttribute("data", dev);
 
-    // Usa el archivo para comprobar el alias
-    model.addAttribute("aliases", Libreria.comprobarAlias(f));
+            return "muestraJws"; 
 
-    // Log del archivo
-    logger.info("Nombre del fichero: " + f.getName());
-    logger.info("Valor del alias: " + alias);
-    logger.info("Valor de la contraseña: " + contrasena);
-    logger.info("Contenido del fichero: " + Base64.getEncoder().encodeToString(Files.readAllBytes(f.toPath())));
 
-    // Generar la clave privada
-    String privateKey = "-----BEGIN PRIVATE KEY-----" +
-            Base64.getEncoder().encodeToString(Libreria.clave(alias, contrasena, f).getEncoded()) + "-----END PRIVATE KEY-----";
 
-    logger.info("Valor de la clave privada: " + privateKey);
-    logger.info("Valor del json: " + json);
-
-    // Aquí puedes realizar la petición HTTP utilizando la clave privada y JSON
-    String dev = httpPetition(privateKey, json);
-    model.addAttribute("data", dev);
-
-    // Devuelve la vista correspondiente
-    return "muestra_jws"; 
     }
 
 
@@ -142,4 +194,5 @@ public class ApplicationController {
             throw new RuntimeException(e);
         }
     }
+    
 }

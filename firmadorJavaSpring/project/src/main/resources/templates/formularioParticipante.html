@@ -14,14 +14,14 @@
             justify-content: flex-start;
             align-items: center;
             height: 100vh;
-            background-color: #2e2885; /* Color púrpura de fondo */
+            background-color: #2e2885; 
             font-family: Arial, sans-serif;
         }
 
         .container {
             width: 50%;
             padding: 20px;
-            background-color: #4f47c0; /* Fondo más claro para el formulario */
+            background-color: #4f47c0; 
             border-radius: 15px;
             margin-top: 30px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -75,14 +75,14 @@
         }
 
         .lrn-group {
-            background-color: #5a4ddf; /* Fondo diferente para la sección LRN */
+            background-color: #5a4ddf; 
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
 
         .sendparticipant-button {
-            background-color: #9ae3e2; /* Color azul claro */
+            background-color: #9ae3e2; 
             border: none;
             border-radius: 25px;
             padding: 15px 30px;
@@ -105,11 +105,10 @@
 <body>
     <div class="container">
         <h1>Formulario Legal</h1>
-        <form action="#" th:action="@{/intro}" method="GET" enctype="multipart/form-data">
+        <form action="#" th:action="@{/data}" method="POST" enctype="multipart/form-data">
             <label for="legal-name">Legal name *</label>
             <input type="text" id="legal-name" name="legal-name" required>
 
-            <!-- Sección de Legal Registration Number -->
             <div class="lrn-group">
                 <label for="registration-number">Legal registration number (LRN) *</label>
                 <div class="radio-group">
@@ -121,7 +120,6 @@
                 </div>
                 <input type="text" id="registration-number" name="registration-number" required>
 
-                <!-- Sección de Credenciales Verificables -->
                 <div class="form-row">
                     <div>
                         <label for="verifiable-id">LRN Verifiable Credential ID *</label>
@@ -134,7 +132,6 @@
                 </div>
             </div>
 
-            <!-- Otras secciones -->
             <div class="form-row">
                 <div>
                     <label for="headquarter-address">Headquarter address (ISO 3166-2) *</label>
@@ -151,6 +148,7 @@
 
             <label for="sub-organization">Sub organization</label>
             <input type="text" id="sub-organization" name="sub-organization">
+
 
             <button type="submit" class="sendparticipant-button">Enviar</button>
         </form>
