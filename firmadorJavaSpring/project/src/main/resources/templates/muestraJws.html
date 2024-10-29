@@ -50,6 +50,7 @@
             background-color: #74c9bb; /* Color al pasar el ratón */
         }
     </style>
+
     <script>
         function copiarPortapapeles() {
             var aux = document.createElement('textarea');
@@ -77,10 +78,16 @@
         
         document.addEventListener("DOMContentLoaded", formatearJSON);
     </script>
+
+    
 </head>
 <body>
     <h1>JWS generado:</h1>
     <pre id="json" th:text="${data}"></pre>
+    <h1>LRN generado:</h1>
+    <pre id="lrn" th:text="${lrn}"></pre>
+    <h1>terminos y condiciones:</h1>
+    <pre id="tYc" th:text="${tYc}"></pre>
     <button onclick="copiarPortapapeles()">Copiar contenido JSON</button>
 </body>
 </html>

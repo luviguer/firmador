@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Form</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #2e2885; 
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 50%;
+            padding: 20px;
+            background-color: #4f47c0; 
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+
+        .terms {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-container input {
+            margin-right: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button {
+            background-color: #f4b93b; 
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #2e2885;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button.disabled {
+            background-color: #6d63a1; 
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .button:not(.disabled):hover {
+            background-color: #d99d2c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="terms">
+            <p>The PARTICIPANT signing the Self-Description agrees as follows:</p>
+            <ul>
+                <li>To update its descriptions about any changes, be it technical, organizational, or legal - especially but not limited to contractual in regards to the indicated attributes present in the descriptions.</li>
+                <li>The keypair used to sign Verifiable Credentials will be revoked where Gaia-X Association becomes aware of any inaccurate statements in regards to the claims which result in a non-compliance with the Trust Framework and policy rules defined in the Policy Rules and Labelling Document (PRLD).</li>
+            </ul>
+        </div>
+
+        <div class="checkbox-container">
+            <input type="checkbox" id="agree">
+            <label for="agree">I agree to the terms and conditions</label>
+        </div>
+        <form th:action="@{/termsAndConditions}" method="POST" enctype="multipart/form-data"> 
+            <div class="input-group">
+                <label for="verifiableId">LRN Verifiable Credential ID *</label>
+                <input type="text" id="verifiableId" name="verifiableId" required>
+            </div>
+            <div class="input-group">
+                <label for="credentialSubjectId">LRN Credential Subject ID *</label>
+                <input type="text" id="credentialSubjectId" name="credentialSubjectId" required>
+            </div>
+            <div class="button-container">
+                <button class="button disabled" id="nextButton" disabled>Next</button>
+            </div>
+            <input type="hidden" id="json" name="json" th:value="${jsonResponse}"/>
+            <input type="hidden" id="lrn" name="lrn" th:value="${lrn}"/>
+        </form>  
+    </div>
+
+    <script>
+        const agreeCheckbox = document.getElementById('agree');
+        const nextButton = document.getElementById('nextButton');
+
+        agreeCheckbox.addEventListener('change', function() {
+            if (agreeCheckbox.checked) {
+                nextButton.classList.remove('disabled');
+                nextButton.disabled = false;
+            } else {
+                nextButton.classList.add('disabled');
+                nextButton.disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>

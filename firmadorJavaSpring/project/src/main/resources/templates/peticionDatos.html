@@ -92,8 +92,10 @@
                 <input type="checkbox" name="check" id="check" onclick="visibilidadContrasena()" />
                 <label for="check"> Mostrar contraseña</label>
             </div>
-            
             <input type="hidden" id="json" name="json" th:value="${jsonResponse}"/>
+            <input type="hidden" id="lrn" name="lrn" th:value="${lrn}"/>
+            <input type="hidden" id="tYc" name="tYc" th:value="${tYc}"/>
+            <input type="hidden" id="verifiableId" name="verifiableId" th:value="${verifiableId}"/>
 
             <button type="submit">Crear JWS</button>
         </form>

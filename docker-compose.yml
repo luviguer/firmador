@@ -9,6 +9,8 @@ services:
       - API_HOST=lucia.arlabdevelopments.com
       - API_PORT=3000
       - API_URI=jws
+     
+      
     volumes:
       - ./keystore.p12:/app/keystore.p12:ro
   api:
@@ -18,3 +20,7 @@ services:
       - .env_api
     ports:
       - "3000:3000"
+
+
+
+      
