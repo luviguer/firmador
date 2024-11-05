@@ -26,6 +26,8 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import java.util.LinkedHashMap;
+import java.util.Arrays;
 
 import es.arlabdevelopments.firmador.Libreria;
 
@@ -54,61 +56,35 @@ public class ApplicationController {
     }
 
 
-
-
-
-
     @PostMapping("/data")
     public String handleForm(
             @RequestParam("legal-name") String legalName,
             @RequestParam("registration-number") String registrationNumber,
-            @RequestParam("verifiable-id") String verifiableIdLRN,
-            @RequestParam("credential-subject-id") String verifiableSubjectIdLRN,
+            @RequestParam("verifiable-id-LRN") String verifiableIdLRN,
+            @RequestParam("credential-subject-id-LRN") String verifiableSubjectIdLRN,
             @RequestParam("headquarter-address") String headquarterAddress,
             @RequestParam("legal-address") String legalAddress,
-            @RequestParam("parent-organization") String parentOrganization,
-            @RequestParam("sub-organization") String subOrganization,
+            @RequestParam("verifiable-id") String verifiableId,
+            @RequestParam("credential-subject-id") String verifiableSubjectId,
             @RequestParam("lrn-type") String lrnType,
             Model model) throws IOException {
         
                 
 
-        Map<String, Object> jsonResponse = new HashMap<>();
+        //GENERO EL JSON PARA EL PARTICIPANTE PERO SIN PROOF        
+
+        String jsonResponseString = generaionJSONParticipante( verifiableId,  verifiableSubjectId,  legalName, headquarterAddress,  legalAddress);
 
 
-
-        jsonResponse.put("@context", new String[]{
-                "https://www.w3.org/2018/credentials/v1",
-                "https://w3id.org/security/suites/jws-2020/v1",
-                "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
-        });
-        jsonResponse.put("type", new String[]{"VerifiableCredential"});
-        jsonResponse.put("id", "https://arlabdevelopments.com/.well-known/ArsysParticipant.json");
-        jsonResponse.put("issuer", "did:web:arlabdevelopments.com");
-        jsonResponse.put("issuanceDate", Instant.now().toString());
-        Map<String, Object> credentialSubject = new HashMap<>();
-        credentialSubject.put("type", "gx:LegalParticipant");
-        credentialSubject.put("gx:legalName", legalName);
-        Map<String, Object> legalRegistrationNumber = new HashMap<>();
-        legalRegistrationNumber.put("id", "https://arlabdevelopments.com/.well-known/legalRegistrationNumberVC.json");
-        credentialSubject.put("gx:legalRegistrationNumber", legalRegistrationNumber);
-        Map<String, String> headquarterAddressInfo = new HashMap<>();
-        headquarterAddressInfo.put("gx:countrySubdivisionCode", headquarterAddress);
-        credentialSubject.put("gx:headquarterAddress", headquarterAddressInfo);
-        Map<String, String> legalAddressInfo = new HashMap<>();
-        legalAddressInfo.put("gx:countrySubdivisionCode", legalAddress);
-        credentialSubject.put("gx:legalAddress", legalAddressInfo);
-        credentialSubject.put("id", "https://arlabdevelopments.com/.well-known/ArsysParticipant.json");
-        jsonResponse.put("credentialSubject", credentialSubject);
-        
-        String jsonResponseString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonResponse);       
-        logger.info("Valor de el json: " + jsonResponseString);
+        logger.info("Valor de el json para el participante sin proof: " + jsonResponseString);
         model.addAttribute("jsonResponse", jsonResponseString);
 
 
 
 
         //GENERO LRN
+
+        logger.info("valor de el verifiableIDLRN" + verifiableIdLRN);
 
         String LRN=generationLRN(registrationNumber, verifiableIdLRN, verifiableSubjectIdLRN, lrnType);
         logger.info("Valor de la respuesta a la peticion de numero de registro: " + LRN);
@@ -180,9 +156,17 @@ public class ApplicationController {
             String dev = httpPetition(privateKey, json);
             String devTyC_proof=httpPetition(privateKey, tYc);
 
-            String devTyC=httpPetitionTerminos(devTyC_proof,verifiableId);
+             logger.info("Valor del json fcon proof: " + devTyC_proof);
+            String  devTyC_proof_completo=anadirVerifiablePresentattionTyC(devTyC_proof);
+            String devTyC=httpPetitionTerminos(devTyC_proof_completo,verifiableId);
+
+            logger.info("Valor del json final terminos y condicion: " + devTyC);
+
+            String jsonParticipante=combineJson( lrn, devTyC_proof, dev);
+
+            logger.info("Valor del json combine: " + jsonParticipante);
         
-            model.addAttribute("tYc", devTyC_proof);
+            model.addAttribute("tYc", devTyC);
             model.addAttribute("data", dev);
             model.addAttribute("lrn", lrn);
 
@@ -287,48 +271,122 @@ public class ApplicationController {
 
     private String generationJSONTerminos(String verifiableId,String credentialSubjectId) throws JsonProcessingException{
 
-   String issuanceDate = Instant.now().toString();
-String issuer = "did:web:arlabdevelopments.com";
+        String issuanceDate = Instant.now().toString();
+        String issuer = "did:web:arlabdevelopments.com";
 
-String verifiableCredentialJson = String.format(
-    "{\n" +
-    "  \"@context\": [\n" +
-    "    \"https://www.w3.org/2018/credentials/v1\",\n" +
-    "    \"https://w3id.org/security/suites/jws-2020/v1\",\n" +
-    "    \"https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#\"\n" +
-    "  ],\n" +
-    "  \"type\": \"VerifiableCredential\",\n" +
-    "  \"issuanceDate\": \"%s\",\n" +
-    "  \"credentialSubject\": {\n" +
-    "    \"@context\": \"https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#\",\n" +
-    "    \"type\": \"gx:GaiaXTermsAndConditions\",\n" +
-    "    \"gx:termsAndConditions\": \"The PARTICIPANT signing the Self-Description agrees as follows:\\n- to update its descriptions about any changes, be it technical, organizational, or legal - especially but not limited to contractual in regards to the indicated attributes present in the descriptions.\\n\\nThe keypair used to sign Verifiable Credentials will be revoked where Gaia-X Association becomes aware of any inaccurate statements in regards to the claims which result in a non-compliance with the Trust Framework and policy rules defined in the Policy Rules and Labelling Document (PRLD).\",\n" +
-    "    \"id\": \"%s\"\n" +
-    "  },\n" +
-    "  \"issuer\": \"%s\",\n" +
-    "  \"id\": \"%s\"\n" +
-    "}",
-    issuanceDate, credentialSubjectId, issuer, verifiableId
-);
+        String verifiableCredentialJson = String.format(
+            "{\n" +
+            "  \"@context\": [\n" +
+            "    \"https://www.w3.org/2018/credentials/v1\",\n" +
+            "    \"https://w3id.org/security/suites/jws-2020/v1\",\n" +
+            "    \"https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#\"\n" +
+            "  ],\n" +
+            "  \"type\": \"VerifiableCredential\",\n" +
+            "  \"issuanceDate\": \"%s\",\n" +
+            "  \"credentialSubject\": {\n" +
+            "    \"@context\": \"https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#\",\n" +
+            "    \"type\": \"gx:GaiaXTermsAndConditions\",\n" +
+            "    \"gx:termsAndConditions\": \"The PARTICIPANT signing the Self-Description agrees as follows:\\n- to update its descriptions about any changes, be it technical, organizational, or legal - especially but not limited to contractual in regards to the indicated attributes present in the descriptions.\\n\\nThe keypair used to sign Verifiable Credentials will be revoked where Gaia-X Association becomes aware of any inaccurate statements in regards to the claims which result in a non-compliance with the Trust Framework and policy rules defined in the Policy Rules and Labelling Document (PRLD).\",\n" +
+            "    \"id\": \"%s\"\n" +
+            "  },\n" +
+            "  \"issuer\": \"%s\",\n" +
+            "  \"id\": \"%s\"\n" +
+            "}",
+            issuanceDate, credentialSubjectId, issuer, verifiableId
+        );
 
-String finalJson = String.format(
-    "{\n" +
-    "  \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n" +
-    "  \"type\": \"VerifiablePresentation\",\n" +
-    "  \"verifiableCredential\": [\n" +
-    "    %s\n" +
-    "  ]\n" +
-    "}",
-    verifiableCredentialJson
-);
+         
 
-    return finalJson;
+        
+
+    return verifiableCredentialJson;
 
 
 
     }
+
+
+    private String anadirVerifiablePresentattionTyC(String jsonTyc){
+
+        String finalJson = String.format(
+                    "{\n" +
+                    "  \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n" +
+                    "  \"type\": \"VerifiablePresentation\",\n" +
+                    "  \"verifiableCredential\": [\n" +
+                    "    %s\n" +
+                    "  ]\n" +
+                    "}",
+                    jsonTyc
+                );
+
+        return finalJson;
+
+    }
     
 
+
+
+    private String generaionJSONParticipante(String verifiableId, String verifiableSubjectId, String legalName,
+                                          String headquarterAddress, String legalAddress) throws JsonProcessingException {
+
+            String issuanceDate = Instant.now().toString();
+            String issuer = "did:web:bakeup.io";
+
+            // Define the credentialSubject map
+            Map<String, Object> credentialSubject = new LinkedHashMap<>();
+            credentialSubject.put("gx:legalName", legalName);
+            credentialSubject.put("gx:headquarterAddress", Map.of("gx:countrySubdivisionCode", headquarterAddress));
+            credentialSubject.put("gx:legalRegistrationNumber", Map.of("id", "https://bakeup.io/gaia-x-lrn.json#cs"));
+            credentialSubject.put("gx:legalAddress", Map.of("gx:countrySubdivisionCode", legalAddress));
+            credentialSubject.put("type", "gx:LegalParticipant");
+            credentialSubject.put("gx-terms-and-conditions:gaiaxTermsAndConditions", 
+            "70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700"); // Cambiar valor según se necesite
+            credentialSubject.put("id", verifiableSubjectId);
+
+            // Define the main JSON structure in the correct order
+            Map<String, Object> mainJson = new LinkedHashMap<>();
+            mainJson.put("@context", new String[]{
+                    "https://www.w3.org/2018/credentials/v1",
+                    "https://w3id.org/security/suites/jws-2020/v1",
+                    "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+            });
+            mainJson.put("type", new String[]{"VerifiableCredential"});
+            mainJson.put("id", verifiableId);
+            mainJson.put("issuer", issuer);
+            mainJson.put("issuanceDate", issuanceDate);
+            mainJson.put("credentialSubject", credentialSubject);
+
+            // Convert to JSON string
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(mainJson);
+    }
+
+
+
+    private String combineJson(String json1, String json2, String json3) throws JsonProcessingException {
+            // Crear un ObjectMapper para convertir objetos a JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Convertir los JSON de entrada en mapas
+            Map<String, Object> cred1 = objectMapper.readValue(json1, Map.class);
+            Map<String, Object> cred2 = objectMapper.readValue(json2, Map.class);
+            Map<String, Object> cred3 = objectMapper.readValue(json3, Map.class);
+
+            // Crear la estructura final
+            Map<String, Object> presentation = new LinkedHashMap<>();
+            presentation.put("@context", "https://www.w3.org/2018/credentials/v1");
+            presentation.put("type", "VerifiablePresentation");
+            presentation.put("verifiableCredential", Arrays.asList(cred1, cred2, cred3));
+
+            // Convertir la estructura final a JSON
+            return objectMapper.writeValueAsString(presentation);
+        }
+
+
+
+
+
+    
     private String httpPetition(String pem, String json){
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");    
