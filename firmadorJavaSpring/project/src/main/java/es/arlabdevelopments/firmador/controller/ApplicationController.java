@@ -73,11 +73,13 @@ public class ApplicationController {
 
         //GENERO EL JSON PARA EL PARTICIPANTE PERO SIN PROOF        
 
-        String jsonResponseString = generaionJSONParticipante( verifiableId,  verifiableSubjectId,  legalName, headquarterAddress,  legalAddress);
+        String jsonResponseString = generaionJSONParticipante( verifiableId,  verifiableSubjectId,  legalName, headquarterAddress,  legalAddress, verifiableIdLRN);
 
 
         logger.info("Valor de el json para el participante sin proof: " + jsonResponseString);
         model.addAttribute("jsonResponse", jsonResponseString);
+        model.addAttribute("verifiableIdParticipant", verifiableId);
+
 
 
 
@@ -103,6 +105,7 @@ public class ApplicationController {
         @RequestParam("json") String json,
         @RequestParam("verifiableId") String verifiableId,
         @RequestParam("credentialSubjectId") String credentialSubjectId,
+        @RequestParam("verifiableIdParticipant") String verifiableIdParticipant,
         Model model) throws JsonProcessingException{
 
             
@@ -127,6 +130,7 @@ public class ApplicationController {
         @RequestParam("contrasena") String contrasena,
         @RequestParam("json") String json,
         @RequestParam("verifiableId") String verifiableId,
+        @RequestParam("verifiableIdParticipant") String verifiableIdParticipant,
         @RequestParam("lrn") String lrn,
         @RequestParam("tYc") String tYc,
        
@@ -165,9 +169,12 @@ public class ApplicationController {
             String jsonParticipante=combineJson( lrn, devTyC_proof, dev);
 
             logger.info("Valor del json combine: " + jsonParticipante);
+
+            String jsonParticipanteFinal=httpPetitionTerminos(jsonParticipante,verifiableIdParticipant);
+
         
             model.addAttribute("tYc", devTyC);
-            model.addAttribute("data", dev);
+            model.addAttribute("data", jsonParticipanteFinal);
             model.addAttribute("lrn", lrn);
 
             return "muestraJws"; 
@@ -327,16 +334,16 @@ public class ApplicationController {
 
 
     private String generaionJSONParticipante(String verifiableId, String verifiableSubjectId, String legalName,
-                                          String headquarterAddress, String legalAddress) throws JsonProcessingException {
+                                          String headquarterAddress, String legalAddress, String verifiableIdLRN) throws JsonProcessingException {
 
             String issuanceDate = Instant.now().toString();
-            String issuer = "did:web:bakeup.io";
+            String issuer = "did:web:gx-notary.arsys.es:v1";
 
             // Define the credentialSubject map
             Map<String, Object> credentialSubject = new LinkedHashMap<>();
             credentialSubject.put("gx:legalName", legalName);
             credentialSubject.put("gx:headquarterAddress", Map.of("gx:countrySubdivisionCode", headquarterAddress));
-            credentialSubject.put("gx:legalRegistrationNumber", Map.of("id", "https://bakeup.io/gaia-x-lrn.json#cs"));
+            credentialSubject.put("gx:legalRegistrationNumber", Map.of("id", verifiableIdLRN));
             credentialSubject.put("gx:legalAddress", Map.of("gx:countrySubdivisionCode", legalAddress));
             credentialSubject.put("type", "gx:LegalParticipant");
             credentialSubject.put("gx-terms-and-conditions:gaiaxTermsAndConditions", 
@@ -490,6 +497,9 @@ public class ApplicationController {
     }
 
 
+
+    
+    
 
 
     
