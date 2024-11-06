@@ -1,94 +1,125 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muestra</title>
+    <title>Verifiable Credential Viewer</title>
     <style>
+        /* General styles */
         body {
-            background-color: #2e1e83; /* Fondo coherente */
+            background-color: #2e1e83;
             font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
             align-items: center;
-            height: 100vh;
-            margin: 0;    
+            margin: 0;
+            padding: 20px;
+            color: #ffffff;
         }
         h1 {
-            color: white; /* Color del título */
+            color: #ffffff;
+            font-size: 2rem;
+        }
+        .tab-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            background-color: #4f47c0;
+            border-radius: 10px;
             margin-bottom: 20px;
-            font-size: 2.5rem; /* Tamaño de fuente */
+        }
+        .tab {
+            flex: 1;
+            padding: 15px;
             text-align: center;
+            cursor: pointer;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .tab.active {
+            background-color: #6a5acf;
+        }
+        .json-container {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            background-color: #4f47c0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            position: relative;
+        }
+        .json-container.active {
+            display: block;
         }
         pre {
-            width: 50%;
-            white-space: pre-wrap; 
-            background-color: #4f47c0; /* Fondo claro para el JSON */
-            border: 1px solid #ccc; 
-            padding: 20px; 
-            box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace; 
-            overflow-x: auto;
-            color: #ffffff; /* Texto blanco */
-            border-radius: 10px; /* Bordes redondeados */
-            margin-bottom: 20px; /* Espaciado */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #88e5d9;
+            background-color: #2e1e83;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 0;
         }
         button {
-            background-color: #88e5d9; /* Color del botón */
+            background-color: #88e5d9;
+            color: #2e2885;
             border: none;
-            border-radius: 25px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            color: #2e2885; /* Color de texto del botón */
+            border-radius: 5px;
+            padding: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            width: 200px; /* Tamaño del botón */
-        }
-        button:hover {
-            background-color: #74c9bb; /* Color al pasar el ratón */
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
     </style>
-
     <script>
-        function copiarPortapapeles() {
-            var aux = document.createElement('textarea');
-            aux.value = document.getElementById('json').textContent;
-            document.body.appendChild(aux);
-            aux.select();
-            document.execCommand("copy");
-            document.body.removeChild(aux);
-            alert("JSON copiado al portapapeles");
+        // Function to handle tab switching and show corresponding JSON
+        function showJson(tabId) {
+            const containers = document.querySelectorAll('.json-container');
+            containers.forEach(container => container.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
         }
-        
-        // Función para formatear el JSON-LD generado con la firma
-        function formatearJSON() {
-            var campoPre = document.getElementById('json');
-            if (campoPre) {
-                try {
-                    var datosJson = JSON.parse(campoPre.textContent);
-                    var jsonFormateado = JSON.stringify(datosJson, null, 2);
-                    campoPre.textContent = jsonFormateado;
-                } catch (e) {
-                    console.error("No se ha podido parsear el JSON ");
-                }
-            }
-        }
-        
-        document.addEventListener("DOMContentLoaded", formatearJSON);
-    </script>
 
-    
+        // Function to copy JSON content to clipboard
+        function copyToClipboard(containerId) {
+            const text = document.querySelector(`#${containerId} pre`).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('JSON copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        }
+    </script>
 </head>
 <body>
-    <h1>Participante:</h1>
-    <pre id="json" th:text="${data}"></pre>
-    <h1>LRN:</h1>
-    <pre id="lrn" th:text="${lrn}"></pre>
-    <h1>Terminos y condiciones:</h1>
-    <pre id="tYc" th:text="${tYc}"></pre>
-    <button onclick="copiarPortapapeles()">Copiar contenido JSON</button>
-</body>
+    <h1>Tus credenciales verifiacles</h1>
 
+    <div class="tab-container">
+        <div class="tab active" data-tab="jsonData" onclick="showJson('jsonData')">Legal Participant</div>
+        <div class="tab" data-tab="jsonLrn" onclick="showJson('jsonLrn')">Legal Registration Number</div>
+        <div class="tab" data-tab="jsonTyc" onclick="showJson('jsonTyc')">Terms And Conditions</div>
+    </div>
+
+    <div id="jsonData" class="json-container active">
+        <button onclick="copyToClipboard('jsonData')">Copy JSON</button>
+        <pre th:text="${data}"></pre>
+    </div>
+
+    <div id="jsonLrn" class="json-container">
+        <button onclick="copyToClipboard('jsonLrn')">Copy JSON</button>
+        <pre th:text="${lrn}"></pre>
+    </div>
+
+    <div id="jsonTyc" class="json-container">
+        <button onclick="copyToClipboard('jsonTyc')">Copy JSON</button>
+        <pre th:text="${tYc}"></pre>
+    </div>
+
+</body>
 </html>
