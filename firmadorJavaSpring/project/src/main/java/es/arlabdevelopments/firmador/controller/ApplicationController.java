@@ -89,6 +89,7 @@ public class ApplicationController {
         logger.info("valor de el verifiableIDLRN" + verifiableIdLRN);
 
         String LRN=generationLRN(registrationNumber, verifiableIdLRN, verifiableSubjectIdLRN, lrnType);
+
         logger.info("Valor de la respuesta a la peticion de numero de registro: " + LRN);
         model.addAttribute("lrn", LRN);
 
@@ -103,19 +104,19 @@ public class ApplicationController {
      public String handleTerms( 
         @RequestParam("lrn") String lrnType,
         @RequestParam("json") String json,
-        @RequestParam("verifiableId") String verifiableId,
-        @RequestParam("credentialSubjectId") String credentialSubjectId,
+        @RequestParam("verifiableIdTerminos") String verifiableIdTerminos,
+        @RequestParam("credentialSubjectIdTerminos") String credentialSubjectIdTerminos,
         @RequestParam("verifiableIdParticipant") String verifiableIdParticipant,
         Model model) throws JsonProcessingException{
 
             
             
-            String jsonSinProof=generationJSONTerminos(verifiableId,credentialSubjectId);
+            String jsonSinProof=generationJSONTerminos(verifiableIdTerminos,credentialSubjectIdTerminos);
             logger.info("json sin proof para la peticion de terminos y condiciones: " + jsonSinProof);
 
 
             model.addAttribute("tYc", jsonSinProof);
-            model.addAttribute("verifiableId", verifiableId);
+            model.addAttribute("verifiableId", verifiableIdTerminos);
             model.addAttribute("jsonResponse", json);
             model.addAttribute("lrn", lrnType);
             return "peticionDatos";
@@ -129,7 +130,7 @@ public class ApplicationController {
         @RequestParam("seleccion") String alias,
         @RequestParam("contrasena") String contrasena,
         @RequestParam("json") String json,
-        @RequestParam("verifiableId") String verifiableId,
+        @RequestParam("verifiableIdTerminos") String verifiableIdTerminos,
         @RequestParam("verifiableIdParticipant") String verifiableIdParticipant,
         @RequestParam("lrn") String lrn,
         @RequestParam("tYc") String tYc,
@@ -160,9 +161,9 @@ public class ApplicationController {
             String dev = httpPetition(privateKey, json);
             String devTyC_proof=httpPetition(privateKey, tYc);
 
-             logger.info("Valor del json fcon proof: " + devTyC_proof);
+            logger.info("Valor del json fcon proof: " + devTyC_proof);
             String  devTyC_proof_completo=anadirVerifiablePresentattionTyC(devTyC_proof);
-            String devTyC=httpPetitionTerminos(devTyC_proof_completo,verifiableId);
+            String devTyC=httpPetitionTerminos(devTyC_proof_completo,verifiableIdTerminos);
 
             logger.info("Valor del json final terminos y condicion: " + devTyC);
 
@@ -187,7 +188,8 @@ public class ApplicationController {
 
     
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////         FUNCIONES AUXILIARES               /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
     private File creaFichero(String file) {
@@ -279,7 +281,6 @@ public class ApplicationController {
     private String generationJSONTerminos(String verifiableId,String credentialSubjectId) throws JsonProcessingException{
 
         String issuanceDate = Instant.now().toString();
-        String issuer = "did:web:arlabdevelopments.com";
 
         String verifiableCredentialJson = String.format(
             "{\n" +
@@ -299,16 +300,10 @@ public class ApplicationController {
             "  \"issuer\": \"%s\",\n" +
             "  \"id\": \"%s\"\n" +
             "}",
-            issuanceDate, credentialSubjectId, issuer, verifiableId
-        );
+            issuanceDate, credentialSubjectId, System.getenv("issuer_Terminos"), verifiableId
+        );  
 
-         
-
-        
-
-    return verifiableCredentialJson;
-
-
+        return verifiableCredentialJson;
 
     }
 
@@ -337,20 +332,17 @@ public class ApplicationController {
                                           String headquarterAddress, String legalAddress, String verifiableIdLRN) throws JsonProcessingException {
 
             String issuanceDate = Instant.now().toString();
-            String issuer = "did:web:gx-notary.arsys.es:v1";
+            
 
-            // Define the credentialSubject map
             Map<String, Object> credentialSubject = new LinkedHashMap<>();
             credentialSubject.put("gx:legalName", legalName);
             credentialSubject.put("gx:headquarterAddress", Map.of("gx:countrySubdivisionCode", headquarterAddress));
             credentialSubject.put("gx:legalRegistrationNumber", Map.of("id", verifiableIdLRN));
             credentialSubject.put("gx:legalAddress", Map.of("gx:countrySubdivisionCode", legalAddress));
             credentialSubject.put("type", "gx:LegalParticipant");
-            credentialSubject.put("gx-terms-and-conditions:gaiaxTermsAndConditions", 
-            "70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700"); // Cambiar valor según se necesite
+            credentialSubject.put("gx-terms-and-conditions:gaiaxTermsAndConditions",System.getenv("gx-terms-and-conditions:gaiaxTermsAndConditions")); 
             credentialSubject.put("id", verifiableSubjectId);
 
-            // Define the main JSON structure in the correct order
             Map<String, Object> mainJson = new LinkedHashMap<>();
             mainJson.put("@context", new String[]{
                     "https://www.w3.org/2018/credentials/v1",
@@ -359,11 +351,10 @@ public class ApplicationController {
             });
             mainJson.put("type", new String[]{"VerifiableCredential"});
             mainJson.put("id", verifiableId);
-            mainJson.put("issuer", issuer);
+            mainJson.put("issuer", System.getenv("issuer_Participant"));
             mainJson.put("issuanceDate", issuanceDate);
             mainJson.put("credentialSubject", credentialSubject);
 
-            // Convert to JSON string
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(mainJson);
     }
@@ -371,27 +362,22 @@ public class ApplicationController {
 
 
     private String combineJson(String json1, String json2, String json3) throws JsonProcessingException {
-            // Crear un ObjectMapper para convertir objetos a JSON
+
+
             ObjectMapper objectMapper = new ObjectMapper();
 
-            // Convertir los JSON de entrada en mapas
             Map<String, Object> cred1 = objectMapper.readValue(json1, Map.class);
             Map<String, Object> cred2 = objectMapper.readValue(json2, Map.class);
             Map<String, Object> cred3 = objectMapper.readValue(json3, Map.class);
 
-            // Crear la estructura final
             Map<String, Object> presentation = new LinkedHashMap<>();
             presentation.put("@context", "https://www.w3.org/2018/credentials/v1");
             presentation.put("type", "VerifiablePresentation");
             presentation.put("verifiableCredential", Arrays.asList(cred1, cred2, cred3));
 
-            // Convertir la estructura final a JSON
             return objectMapper.writeValueAsString(presentation);
-        }
 
-
-
-
+    }
 
     
     private String httpPetition(String pem, String json){
@@ -434,7 +420,7 @@ public class ApplicationController {
 
 
         Request request = new Request.Builder()
-                .url("https://gx-notary.arsys.es/v1/registrationNumberVC?"+url)
+                .url(System.getenv("API_NumRegistration")+url)
                 .post(body)
                 .addHeader("Content-Type", "application/json")  
                 .build();
@@ -457,7 +443,7 @@ public class ApplicationController {
     }
 
 
-    //Peticion para terminos y condiciones
+    //Peticion para terminos y condiciones y uso la misma para el participante
     private String httpPetitionTerminos(String jsonResponseString,String verifiableId) throws UnsupportedEncodingException {
 
 
@@ -474,7 +460,7 @@ public class ApplicationController {
 
 
         Request request = new Request.Builder()
-                .url("https://compliance.arlabdevelopments.com/v1-staging/api/credential-offers?vcid="+encodedString)
+                .url(System.getenv("API_TerminosYParticipante")+encodedString)
                 .post(body)
                 .addHeader("Content-Type", "application/json")  
                 .build();
@@ -495,15 +481,6 @@ public class ApplicationController {
 
           
     }
-
-
-
-    
-    
-
-
-    
-
 
 
 

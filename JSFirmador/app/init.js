@@ -79,6 +79,7 @@ const staticDocumentLoader = async url => {
     documentUrl: url
   }
 }
+
 // Función asincrona para la creación del JWS al con los parametros pasados
 async function createJWS(pem, json) {
   const rsaPrivateKey = await importPKCS8(pem, 'PS256')

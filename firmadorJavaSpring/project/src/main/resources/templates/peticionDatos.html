@@ -73,7 +73,7 @@
 <body>
     <div class="container">
         <form action="#" th:action="@{/upload}" method="POST" enctype="multipart/form-data">
-            <h2>Formulario Legal</h2>
+            <h2>Import signed documents</h2>
             <div class="form-group">
                 <label for="archivo">Archivo:</label>
                 <input type="file" name="archivo" id="archivo" required />
@@ -95,7 +95,7 @@
             <input type="hidden" id="json" name="json" th:value="${jsonResponse}"/>
             <input type="hidden" id="lrn" name="lrn" th:value="${lrn}"/>
             <input type="hidden" id="tYc" name="tYc" th:value="${tYc}"/>
-            <input type="hidden" id="verifiableId" name="verifiableId" th:value="${verifiableId}"/>
+            <input type="hidden" id="verifiableIdTerminos" name="verifiableIdTerminos" th:value="${verifiableIdTerminos}"/>
             <input type="hidden" id="verifiableIdParticipant" name="verifiableIdParticipant" th:value="${verifiableIdParticipant}"/>
             
             <button type="submit">Crear JWS</button>
