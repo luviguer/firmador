@@ -7,7 +7,6 @@
     
     <link rel="stylesheet" href="/style_muestraJws.css"> 
     <script>
-        // Function to handle tab switching and show corresponding JSON
         function showJson(tabId) {
             const containers = document.querySelectorAll('.json-container');
             containers.forEach(container => container.classList.remove('active'));
@@ -18,7 +17,6 @@
             document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
         }
 
-        // Function to copy JSON content to clipboard
         function copyToClipboard(containerId) {
             const text = document.querySelector(`#${containerId} pre`).textContent;
             navigator.clipboard.writeText(text).then(() => {
@@ -40,17 +38,17 @@
 
     <div id="jsonData" class="json-container active">
         <button onclick="copyToClipboard('jsonData')">Copy JSON</button>
-        <pre th:text="${data}"></pre>
+        <pre th:text="${credencialParticipante}"></pre>
     </div>
 
     <div id="jsonLrn" class="json-container">
         <button onclick="copyToClipboard('jsonLrn')">Copy JSON</button>
-        <pre th:text="${lrn}"></pre>
+        <pre th:text="${credecialNumeroDeRegitro}"></pre>
     </div>
 
     <div id="jsonTyc" class="json-container">
         <button onclick="copyToClipboard('jsonTyc')">Copy JSON</button>
-        <pre th:text="${tYc}"></pre>
+        <pre th:text="${credencialTerminosYCondiciones}"></pre>
     </div>
 
 </body>

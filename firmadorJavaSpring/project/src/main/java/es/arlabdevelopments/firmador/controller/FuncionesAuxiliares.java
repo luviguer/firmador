@@ -28,6 +28,7 @@ public class FuncionesAuxiliares {
     
     Logger logger = Logger.getLogger("Pruebas SpringBoot Funciones");
 
+    
     public File creaFichero(String file) {
         File f = null;
         try {

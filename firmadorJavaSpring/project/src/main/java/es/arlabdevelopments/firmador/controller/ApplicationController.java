@@ -45,6 +45,7 @@ public class ApplicationController {
     }
 
 
+    
     @PostMapping("/data")
     public String handleForm(
             @RequestParam("legal-name") String legalName,
@@ -60,25 +61,17 @@ public class ApplicationController {
         
                 
 
-        //GENERO EL JSON PARA EL PARTICIPANTE PERO SIN PROOF        
+        //genero el json para el participante pero aun le falta el proof para enviarlo a la API       
 
         String jsonResponseString = faux.generaionJSONParticipante( verifiableId,  verifiableSubjectId,  legalName, headquarterAddress,  legalAddress, verifiableIdLRN);
-
-
         logger.info("Valor de el json para el participante sin proof: " + jsonResponseString);
         model.addAttribute("jsonResponse", jsonResponseString);
         model.addAttribute("verifiableIdParticipant", verifiableId);
 
 
-
-
-
-        //GENERO LRN
-
+        //genero el numero de registro legal 
         logger.info("valor de el verifiableIDLRN" + verifiableIdLRN);
-
         String LRN=faux.generationLRN(registrationNumber, verifiableIdLRN, verifiableSubjectIdLRN, lrnType);
-
         logger.info("Valor de la respuesta a la peticion de numero de registro: " + LRN);
         model.addAttribute("lrn", LRN);
 
@@ -99,7 +92,7 @@ public class ApplicationController {
         Model model) throws JsonProcessingException{
 
             
-            
+            //genero el json para terminos y condiciones pero sin proof
             String jsonSinProof=faux.generationJSONTerminos(verifiableIdTerminos,credentialSubjectIdTerminos);
             logger.info("json sin proof para la peticion de terminos y condiciones: " + jsonSinProof);
 
@@ -121,20 +114,19 @@ public class ApplicationController {
         @RequestParam("json") String json,
         @RequestParam("verifiableIdTerminos") String verifiableIdTerminos,
         @RequestParam("verifiableIdParticipant") String verifiableIdParticipant,
-        @RequestParam("lrn") String lrn,
+        @RequestParam("lrn") String credecialNumeroDeRegitro,
         @RequestParam("tYc") String tYc,
        
         Model model) throws IOException {
 
+            
             if (file.isEmpty()) {
                 logger.info("El archivo no se ha subido correctamente.");     
                 
             }
 
             File f = faux.creaFichero(file);  
-
             model.addAttribute("aliases", Libreria.comprobarAlias(f));
-
             logger.info("Nombre del fichero: " + f.getName());
             logger.info("Valor del alias: " + alias);
             logger.info("Valor de la contraseña: " + contrasena);
@@ -147,25 +139,32 @@ public class ApplicationController {
             logger.info("Valor del json: " + json);
 
 
+
+            //añado el proof al json de participante
             String dev = p.httpPetition(privateKey, json);
+
+            //añado el proof al json de terminos y condiciones
             String devTyC_proof=p.httpPetition(privateKey, tYc);
+            logger.info("Valor del json de terminos y condiciones con proof: " + devTyC_proof);
 
-            logger.info("Valor del json fcon proof: " + devTyC_proof);
+            //añado el contexto al json de terminos y condiciones
             String  devTyC_proof_completo=faux.anadirVerifiablePresentattionTyC(devTyC_proof);
-            String devTyC=p.httpPetitionTerminos(devTyC_proof_completo,verifiableIdTerminos);
 
-            logger.info("Valor del json final terminos y condicion: " + devTyC);
+            //llamada a la API para consguir la credencial de terminos y condiciones
+            String credencialTerminosYCondiciones=p.httpPetitionTerminos(devTyC_proof_completo,verifiableIdTerminos);
+            logger.info("Valor de la credencial de terminos y condicion: " + credencialTerminosYCondiciones);
 
-            String jsonParticipante=faux.combineJson( lrn, devTyC_proof, dev);
-
+            //genero ya el json para el participante uniendolo con las otras dos credenciales
+            String jsonParticipante=faux.combineJson( credecialNumeroDeRegitro, devTyC_proof, dev);
             logger.info("Valor del json combine: " + jsonParticipante);
 
-            String jsonParticipanteFinal=p.httpPetitionTerminos(jsonParticipante,verifiableIdParticipant);
+            //llamada a la API pra conseguir la credencial de participante
+            String credencialParticipante=p.httpPetitionTerminos(jsonParticipante,verifiableIdParticipant);
 
         
-            model.addAttribute("tYc", devTyC);
-            model.addAttribute("data", jsonParticipanteFinal);
-            model.addAttribute("lrn", lrn);
+            model.addAttribute("credencialTerminosYCondiciones", credencialTerminosYCondiciones);
+            model.addAttribute("credencialParticipante", credencialParticipante);
+            model.addAttribute("credecialNumeroDeRegitro", credecialNumeroDeRegitro);
 
             return "muestraJws"; 
 
