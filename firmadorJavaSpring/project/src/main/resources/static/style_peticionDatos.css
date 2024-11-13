@@ -1,0 +1,53 @@
+body {
+    background-color: #2e1e83;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.container {
+    width: 50%;  
+    padding: 20px;
+    background-color: #4f47c0; 
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+label, input, select, textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+input, select, textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background: #e5e5e5;
+}
+input[type="password"] {
+    background: #ffffff;
+}
+button {
+    background-color: #88e5d9;
+    border: none;
+    border-radius: 25px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2e2885;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    width: 100%;
+}
+button:hover {
+    background-color: #74c9bb; 
+}

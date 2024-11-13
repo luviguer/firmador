@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2e2885; 
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+.container {
+    max-width: 800px;
+    padding: 20px;
+    text-align: center;
+}
+.steps {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    color: #b3b3b3;
+}
+.step {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.step.active {
+    color: #ffffff;
+}
+.step-number {
+    background-color: #9ae3e2; 
+    color: #2e2885;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+.step.active .step-number {
+    background-color: #ffffff;
+    color: #2e2885;
+}
+.title {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+.description {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #d3d3d3;
+}
+.disclaimer {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+    font-size: 14px;
+}
+.disclaimer ul {
+    list-style-type: none;
+    padding: 0;
+}
+.disclaimer li::before {
+    content: "•";
+    color: #d3d3d3;
+    padding-right: 10px;
+}
+.toggle {
+    margin-top: 20px;
+}
+.toggle input {
+    display: none;
+}
+.toggle label {
+    background: #9ae3e2; 
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    position: relative;
+    width: 50px;
+}
+.toggle label:after {
+    background: #2e2885; 
+    border-radius: 50%;
+    content: '';
+    height: 20px;
+    left: 2px;
+    position: absolute;
+    top: 2px;
+    width: 20px;
+    transition: all 0.3s;
+}
+.toggle input:checked + label:after {
+    left: 26px;
+    background: #4CAF50; 
+}
+.start-button {
+    background-color: #9ae3e2; 
+    border: none;
+    border-radius: 25px;
+    color: #2e2885;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+.start-button:hover {
+    background-color: #82c9c8; 
+}
