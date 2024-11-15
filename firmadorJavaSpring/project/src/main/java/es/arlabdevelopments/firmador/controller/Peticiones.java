@@ -21,32 +21,33 @@ public class Peticiones {
     
 
 
-    Logger logger = Logger.getLogger("Pruebas SpringBoot Peticiones");
+        Logger logger = Logger.getLogger("Pruebas SpringBoot Peticiones");
         
-    public String httpPetition(String pem, String json){
-            OkHttpClient client = new OkHttpClient();
-            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");    
-            @SuppressWarnings("deprecation")
-            RequestBody body = RequestBody.create(mediaType, "pem= "+ URLEncoder.encode(pem)+" &json=" + URLEncoder.encode(json));
-            logger.info("URL API: " + System.getenv("API_PROTOCOL")+"://"+System.getenv("API_HOST")+":"+System.getenv("API_PORT")+"/"+System.getenv("API_URI"));
-            Request request = new Request.Builder()
-                    .url(System.getenv("API_PROTOCOL")+"://"+System.getenv("API_HOST")+":"+System.getenv("API_PORT")+"/"+System.getenv("API_URI"))
-                    .method("POST", body)
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .build();
-            Response response = null;
-            try {
-                response = client.newCall(request).execute();
-            } catch (IOException e) {
-                logger.severe("ha habido un error en al ejecución de la llamada al API");
-                throw new RuntimeException(e);
+        //peticion para generar el proof 
+        public String httpPetition(String pem, String json){
+                OkHttpClient client = new OkHttpClient();
+                MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");    
+                @SuppressWarnings("deprecation")
+                RequestBody body = RequestBody.create(mediaType, "pem= "+ URLEncoder.encode(pem)+" &json=" + URLEncoder.encode(json));
+                logger.info("URL API: " + System.getenv("API_PROTOCOL")+"://"+System.getenv("API_HOST")+":"+System.getenv("API_PORT")+"/"+System.getenv("API_URI"));
+                Request request = new Request.Builder()
+                        .url(System.getenv("API_PROTOCOL")+"://"+System.getenv("API_HOST")+":"+System.getenv("API_PORT")+"/"+System.getenv("API_URI"))
+                        .method("POST", body)
+                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .build();
+                Response response = null;
+                try {
+                    response = client.newCall(request).execute();
+                } catch (IOException e) {
+                    logger.severe("ha habido un error en al ejecución de la llamada al API");
+                    throw new RuntimeException(e);
+                }
+                try {
+                    return response.body().string();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-            try {
-                return response.body().string();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
 
         //Peticion para el numero de registro

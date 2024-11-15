@@ -1,38 +1,223 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Styled Form</title>
-    
-    <link rel="stylesheet" href="/style_terminosYcondiciones.css"> 
+    <title>Formulario de Términos y Condiciones</title>
+    <style>
+        /* Estilo del cuerpo */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f9f9fb; /* Fondo gris claro */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilo de la barra de pasos */
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            margin-bottom: 40px; /* Separación con el formulario */
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            font-weight: 600;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px; /* Espacio entre los pasos */
+            flex: 1;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .step.active {
+            background-color: #664de5;
+            color: #fff;
+            border-color: #664de5;
+        }
+
+        .step-number {
+            background-color: #fff;
+            color: #664de5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Contenedor del formulario */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            background-color: #ffffff; /* Fondo blanco del contenedor */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 1.5rem;
+            text-align: left;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Estilos del formulario */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            margin-bottom: 20px;
+            font-size: 0.875rem;
+            color: #333333;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row div {
+            flex: 1;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        .checkbox-container input {
+            margin-right: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        /* Estilo del botón */
+        .button {
+            background-color: #6366f1; /* Color azul */
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .button.disabled {
+            background-color: #d1d5db; /* Gris deshabilitado */
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .button:not(.disabled):hover {
+            background-color: #4f46e5; /* Azul oscuro en hover */
+        }
+
+    </style>
 </head>
 <body>
+    <!-- Barra de pasos -->
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            Start
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            Participant & Registration Number
+        </div>
+        <div class="step active">
+            <div class="step-number">3</div>
+            Terms & Conditions
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            Sign
+        </div>
+    </div>
+
+    <!-- Contenedor del formulario -->
     <div class="container">
+        <h1>Términos y Condiciones</h1>
         <div class="terms">
-            <p>The PARTICIPANT signing the Self-Description agrees as follows:</p>
+            <p>El PARTICIPANTE que firma la Autodescripción acepta lo siguiente:</p>
             <ul>
-                <li>To update its descriptions about any changes, be it technical, organizational, or legal - especially but not limited to contractual in regards to the indicated attributes present in the descriptions.</li>
-                <li>The keypair used to sign Verifiable Credentials will be revoked where Gaia-X Association becomes aware of any inaccurate statements in regards to the claims which result in a non-compliance with the Trust Framework and policy rules defined in the Policy Rules and Labelling Document (PRLD).</li>
+                <li>Actualizar sus descripciones sobre cualquier cambio, ya sea técnico, organizativo o legal, especialmente en relación a los atributos indicados en las descripciones.</li>
+                <li>La clave utilizada para firmar Credenciales Verificables será revocada si Gaia-X Association se entera de cualquier declaración inexacta en cuanto a las afirmaciones que resulten en un incumplimiento con el Marco de Confianza y las reglas de política definidas en el Documento de Reglas de Política y Etiquetado (PRLD).</li>
             </ul>
         </div>
 
         <div class="checkbox-container">
             <input type="checkbox" id="agree">
-            <label for="agree">I agree to the terms and conditions</label>
+            <label for="agree">Acepto los términos y condiciones</label>
         </div>
-        <form th:action="@{/termsAndConditions}" method="POST" enctype="multipart/form-data"> 
+
+        <form action="#" th:action="@{/termsAndConditions}" method="POST" enctype="multipart/form-data">
             <div class="input-group">
-                <label for="verifiableIdTerminos">LRN Verifiable Credential ID *</label>
+                <label for="verifiableIdTerminos">ID de Credencial Verificable LRN *</label>
                 <input type="text" id="verifiableIdTerminos" name="verifiableIdTerminos" required>
             </div>
             <div class="input-group">
-                <label for="credentialSubjectIdTerminos">LRN Credential Subject ID *</label>
+                <label for="credentialSubjectIdTerminos">ID del Sujeto de Credencial LRN *</label>
                 <input type="text" id="credentialSubjectIdTerminos" name="credentialSubjectIdTerminos" required>
             </div>
+
             <div class="button-container">
-                <button class="button disabled" id="nextButton" disabled>Next</button>
+                <button type="submit" class="button disabled" id="nextButton" disabled>Siguiente</button>
             </div>
+
             <input type="hidden" id="json" name="json" th:value="${jsonResponse}"/>
             <input type="hidden" id="lrn" name="lrn" th:value="${lrn}"/>
             <input type="hidden" id="verifiableIdParticipant" name="verifiableIdParticipant" th:value="${verifiableIdParticipant}"/>

@@ -1,94 +1,134 @@
+/* Estilo del cuerpo y contenedor principal */
 body {
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100vh;
-    background-color: #2e2885; 
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #f9f9fb; /* Fondo gris claro */
     font-family: Arial, sans-serif;
 }
 
 .container {
-    width: 50%;
-    padding: 20px;
-    background-color: #4f47c0; 
-    border-radius: 15px;
-    margin-top: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    background-color: #ffffff; /* Fondo blanco del contenedor */
+    border-radius: 8px;
+    margin-top: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 h1 {
-    color: white;
-    font-size: 2.5rem;
-    text-align: center;
+    color: #333333;
+    font-size: 1.5rem;
+    text-align: left;
     margin-bottom: 20px;
+    font-weight: 600;
 }
 
+/* Estilo de formulario y etiquetas */
 form {
     display: flex;
     flex-direction: column;
 }
 
 label {
-    color: white;
-    font-weight: bold;
+    color: #6b7280; /* Gris oscuro para las etiquetas */
+    font-size: 0.875rem;
+    font-weight: 500;
     margin-bottom: 5px;
+    display: block;
 }
 
-input, select {
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
+/* Estilo para los campos de texto y select */
+input[type="text"],
+select {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db; /* Borde gris claro */
+    background-color: #f9fafb; /* Fondo gris suave */
     margin-bottom: 20px;
-    font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
+    font-size: 0.875rem;
+    color: #333333;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+input[type="text"]:focus,
+select:focus {
+    border-color: #6366f1; /* Color de borde azul en foco */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); /* Sombra en foco */
+    outline: none;
+}
+
+/* Estilo de fila de formulario para campos alineados horizontalmente */
 .form-row {
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
 .form-row div {
-    width: 48%;
+    flex: 1;
 }
 
+/* Estilo de grupo de radio buttons */
 .radio-group {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.radio-group input {
-    margin-right: 10px;
+.radio-group label {
+    display: flex;
+    align-items: center;
+    background-color: #f3f4f6; /* Fondo gris claro */
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: #333333;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
+.radio-group input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #6366f1; /* Color azul para los radios */
+}
+
+.radio-group label:hover {
+    background-color: #e5e7eb;
+}
+
+/* Estilo del grupo LRN */
 .lrn-group {
-    background-color: #5a4ddf; 
-    padding: 15px;
-    border-radius: 10px;
+    background-color: #f9fafb; /* Fondo gris suave */
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb; /* Borde gris claro */
     margin-bottom: 20px;
 }
 
 .sendparticipant-button {
-    background-color: #9ae3e2; 
+    background-color: #6366f1; /* Color azul del botón */
     border: none;
-    border-radius: 25px;
-    padding: 15px 30px;
-    font-size: 1.2rem;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 1rem;
     font-weight: bold;
-    color: #2e2885;
+    color: #ffffff;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
+    transition: background-color 0.2s ease;
     width: 100%;
+    text-align: center;
 }
 
 .sendparticipant-button:hover {
-    background-color: #82c9c8;
+    background-color: #4f46e5; /* Color al pasar el cursor */
+}
+
+.sendparticipant-button:active {
+    background-color: #4338ca; /* Color más oscuro al hacer clic */
 }

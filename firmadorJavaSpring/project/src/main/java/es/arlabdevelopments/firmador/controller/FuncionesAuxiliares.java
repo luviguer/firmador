@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class FuncionesAuxiliares {
     
+    
     @Autowired
     private Peticiones p;
     
@@ -56,7 +57,7 @@ public class FuncionesAuxiliares {
     }
 
 
-    
+    //uso esto en el controller de manera que se genera el numero de registro y aqui realizo la peticion hacia la API, con esta funcion ya obtengo el numero de registro legal 
     public String generationLRN(String registrationNumber,String verifiableId,String credentialSubjectId,String lrnType) throws JsonProcessingException{
 
     String jsonNumero="";
@@ -116,7 +117,7 @@ public class FuncionesAuxiliares {
 
 
 
-
+    //funcion que genera el json de terminos y condiciones pero sin proof
     public String generationJSONTerminos(String verifiableId,String credentialSubjectId) throws JsonProcessingException{
 
         String issuanceDate = Instant.now().toString();
@@ -146,7 +147,7 @@ public class FuncionesAuxiliares {
 
     }
 
-
+    //funcion que añade el contxto a el json de terminos y condiciones, json que ya tiene el proof
     public String anadirVerifiablePresentattionTyC(String jsonTyc){
 
         String finalJson = String.format(
@@ -166,7 +167,7 @@ public class FuncionesAuxiliares {
     
 
 
-
+    //funcion que genera el json de participante pero solo las claims propias sin la parte de las otras ds credenciales y sin el proof
     public String generaionJSONParticipante(String verifiableId, String verifiableSubjectId, String legalName,
                                           String headquarterAddress, String legalAddress, String verifiableIdLRN) throws JsonProcessingException {
 
@@ -199,7 +200,7 @@ public class FuncionesAuxiliares {
     }
 
 
-
+    //funcion que genera el json de participante completo ya que combina las 3 credenciales
     public String combineJson(String json1, String json2, String json3) throws JsonProcessingException {
 
 

@@ -4,22 +4,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Estilizado</title>
-    <link rel="stylesheet" href="/style_formularioParticipante.css"> 
-    
+    <style>
+        /* Estilo del cuerpo */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f9f9fb; /* Fondo gris claro */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilo de la barra de pasos */
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            margin-bottom: 40px; /* Separación con el formulario */
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            font-weight: 600;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px; /* Espacio entre los pasos */
+            flex: 1;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .step.active {
+            background-color: #664de5;
+            color: #fff;
+            border-color: #664de5;
+        }
+
+        .step-number {
+            background-color: #fff;
+            color: #664de5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Contenedor del formulario */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            background-color: #ffffff; /* Fondo blanco del contenedor */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 1.5rem;
+            text-align: left;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Estilos del formulario */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select {
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+            margin-bottom: 20px;
+            font-size: 0.875rem;
+            color: #333333;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row div {
+            flex: 1;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            background-color: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #333333;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 8px;
+            accent-color: #6366f1;
+        }
+
+        .radio-group label:hover {
+            background-color: #e5e7eb;
+        }
+
+        .lrn-group {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .sendparticipant-button {
+            background-color: #6366f1;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            text-align: center;
+        }
+
+        .sendparticipant-button:hover {
+            background-color: #4f46e5;
+        }
+
+        .sendparticipant-button:active {
+            background-color: #4338ca;
+        }
+    </style>
 </head>
 <body>
+    <!-- Barra de pasos -->
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            Start
+        </div>
+        <div class="step active">
+            <div class="step-number">2</div>
+            Participant & Registration Number
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            Terms & Conditions
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            Sign
+        </div>
+    </div>
+
+    <!-- Contenedor del formulario -->
     <div class="container">
-        <h1>Create Participant and Registration number</h1>
+        <h1>Create Participant and Registration Number</h1>
         <form action="#" th:action="@{/data}" method="POST" enctype="multipart/form-data">
-            <label for="legal-name">Legal name *</label>
+            <label for="legal-name">Legal Name *</label>
             <input type="text" id="legal-name" name="legal-name" required>
 
             <div class="lrn-group">
-                <label for="registration-number">Legal registration number (LRN) *</label>
+                <label for="registration-number">Legal Registration Number (LRN) *</label>
                 <div class="radio-group">
                     <label><input type="radio" name="lrn-type" value="EORI" required> EORI</label>
-                    <label><input type="radio" name="lrn-type" value="vatID" required> vatID</label>
-                    <label><input type="radio" name="lrn-type" value="leiCode" required> leiCode</label>
+                    <label><input type="radio" name="lrn-type" value="vatID" required> VAT ID</label>
+                    <label><input type="radio" name="lrn-type" value="leiCode" required> LEI Code</label>
                 </div>
                 <input type="text" id="registration-number" name="registration-number" required>
 
@@ -37,26 +235,23 @@
 
             <div class="form-row">
                 <div>
-                    <label for="headquarter-address">Headquarter address (ISO 3166-2) *</label>
+                    <label for="headquarter-address">Headquarter Address (ISO 3166-2) *</label>
                     <input type="text" id="headquarter-address" name="headquarter-address" value="BE-BRU" required>
                 </div>
                 <div>
-                    <label for="legal-address">Legal address (ISO 3166-2) *</label>
+                    <label for="legal-address">Legal Address (ISO 3166-2) *</label>
                     <input type="text" id="legal-address" name="legal-address" value="BE-BRU" required>
                 </div>
             </div>
-
+                    
             <label for="verifiable-id">Verifiable Credential ID</label>
             <input type="text" id="verifiable-id" name="verifiable-id">
 
             <label for="credential-subject-id">Credential Subject ID</label>
             <input type="text" id="credential-subject-id" name="credential-subject-id">
 
-
             <button type="submit" class="sendparticipant-button">Enviar</button>
         </form>
     </div>
 </body>
 </html>
-
-

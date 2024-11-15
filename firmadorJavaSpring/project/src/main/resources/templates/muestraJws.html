@@ -5,7 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifiable Credential Viewer</title>
     
-    <link rel="stylesheet" href="/style_muestraJws.css"> 
+    <style>
+        /* Main body and header styling */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9fb; /* Light grey background */
+            font-family: Arial, sans-serif;
+            color: #333333;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #333333;
+            margin-top: 30px;
+            font-weight: 600;
+        }
+
+        /* Tab container and tab styling */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background-color: #e5e7eb; /* Light grey for inactive tabs */
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #333333;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .tab.active {
+            background-color: #6366f1; /* Blue for active tab */
+            color: #ffffff;
+        }
+
+        /* JSON container and button styling */
+        .json-container {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff; /* White background */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            position: relative;
+        }
+
+        .json-container.active {
+            display: block;
+        }
+
+        .json-container button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            background-color: #6366f1; /* Button blue color */
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .json-container button:hover {
+            background-color: #4f46e5; /* Darker blue on hover */
+        }
+
+        /* JSON text styling */
+        pre {
+            overflow-x: auto;
+            white-space: pre-wrap; /* Wraps long lines */
+            word-wrap: break-word;
+            color: #333333;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+    </style>
+
     <script>
         function showJson(tabId) {
             const containers = document.querySelectorAll('.json-container');
@@ -28,7 +115,7 @@
     </script>
 </head>
 <body>
-    <h1>Tus credenciales verifiacles</h1>
+    <h1>Tus credenciales verificables</h1>
 
     <div class="tab-container">
         <div class="tab active" data-tab="jsonData" onclick="showJson('jsonData')">Legal Participant</div>

@@ -1,48 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participant VCs in 4 steps</title>
-   
-    <link rel="stylesheet" href="/style_principal.css"> 
-
-
+    <title>Participant VCs en 4 pasos</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f5f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    
+        .container {
+            max-width: 900px;
+            padding: 50px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+            text-align: center;
+        }
+    
+        /* Estilo para pasos */
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+        }
+    
+        .step {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            font-weight: 600;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px; /* Espacio entre los pasos */
+        }
+    
+        .step.active {
+            background-color: #664de5;
+            color: #fff;
+            border-color: #664de5;
+        }
+    
+        .step-number {
+            background-color: #fff;
+            color: #664de5;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px; /* Más espacio entre el número y el texto */
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    
+        .step.active .step-number {
+            background-color: #fff;
+            color: #664de5;
+        }
+    
+        /* Estilo de los campos del formulario */
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+    
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            margin-top: 5px;
+            font-size: 1rem;
+            color: #333;
+        }
+    
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #664de5;
+            background-color: #fff;
+        }
+    
+        /* Título */
+        .title {
+            font-size: 2rem; /* Más grande */
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    
+        /* Descripción */
+        .description {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+    
+        /* Botón de inicio */
+        .start-button {
+            background-color: #664de5;
+            color: #fff;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+    
+        .start-button:hover {
+            background-color: #563dca;
+        }
+    
+        /* Centrar el botón */
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/createParticipant}" method="GET" enctype="multipart/form-data"> 
-       
-    
-    <div class="center-content">
-        <div class="container">
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    Start
+    <form th:action="@{/createParticipant}" method="GET" enctype="multipart/form-data"> 
+        <div class="center-content">
+            <div class="container">
+                <div class="title">Participant VCs en 4 pasos</div>
+                <div class="steps">
+                    <div class="step active">
+                        <div class="step-number">1</div>
+                        Start
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        Participant & Registration Number
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        Terms & Conditions
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        Sign
+                    </div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    Participant & Registration Number
+                <div class="description">
+                    Siga los pasos para emitir las credenciales verificables necesarias para aprobar el cumplimiento.
+                    Una vez completado, obtendrá 3 credenciales verificables: participante legal, número de registro legal y términos y condiciones.
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    Terms & Conditions
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    Sign
+                
+                <div class="button-container">
+                    <button type="submit" class="start-button">START</button>
                 </div>
             </div>
-            <div class="title">Participant VCs en 4 pasos</div>
-            <div class="description">
-                Siga los pasos para emitir las credenciales verificables necesarias para aprobar el cumplimiento.
-                Una vez completado, obtendrá 3 credenciales verificables: participante legal, número de registro legal y términos y condiciones.
-            </div>
-            
-            <button type="submit" class="start-button">START</button>
-           
         </div>
-    </div>
- <form>
+    </form>
 </body>
 </html>
