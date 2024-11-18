@@ -72,16 +72,19 @@ public class Peticiones {
             Response response = null;
             try {
                 response = client.newCall(request).execute();
+                int statusCode = response.code();
+
+                if (statusCode == 200) {
+                    return response.body() != null ? response.body().string() : "";
+                } else {
+                    return "Numero no valido";
+                }
+
+
             } catch (IOException e) {
                 logger.severe("ha habido un error en al ejecución de la llamada al API");
                 throw new RuntimeException(e);
-            }
-        
-            try {
-                        return response.body().string();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }           
+            }           
 
             
         }

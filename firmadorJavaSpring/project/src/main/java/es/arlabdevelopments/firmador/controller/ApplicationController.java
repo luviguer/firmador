@@ -72,6 +72,25 @@ public class ApplicationController {
         //genero el numero de registro legal 
         logger.info("valor de el verifiableIDLRN" + verifiableIdLRN);
         String LRN=faux.generationLRN(registrationNumber, verifiableIdLRN, verifiableSubjectIdLRN, lrnType);
+
+        //compruebo que se me ha generado el numero de registro si me han introducido uno valido lanzo un mensaje de error 
+        if ("Numero no valido".equals(LRN)) {
+            logger.warning("Número de registro legal inválido.");
+            model.addAttribute("errorMessage", "El número de registro legal es inválido. Por favor, revise los datos ingresados.");
+            model.addAttribute("legalName", legalName);
+            model.addAttribute("registrationNumber", registrationNumber);
+            model.addAttribute("verifiableIdLRN", verifiableIdLRN);
+            model.addAttribute("verifiableSubjectIdLRN", verifiableSubjectIdLRN);
+            model.addAttribute("headquarterAddress", headquarterAddress);
+            model.addAttribute("legalAddress", legalAddress);
+            model.addAttribute("verifiableId", verifiableId);
+            model.addAttribute("verifiableSubjectId", verifiableSubjectId);
+            model.addAttribute("lrnType", lrnType);
+            return "formularioParticipante";
+        }
+    
+
+
         logger.info("Valor de la respuesta a la peticion de numero de registro: " + LRN);
         model.addAttribute("lrn", LRN);
 
