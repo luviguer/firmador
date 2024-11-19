@@ -1,53 +1,157 @@
 body {
-    background-color: #2e1e83;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9fb; 
     font-family: Arial, sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px; 
+}
+
+.steps {
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+    margin-bottom: 40px; 
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-weight: 600;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 10px; 
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+}
+
+.step.active {
+    background-color: #664de5;
+    color: #fff;
+    border-color: #664de5;
+}
+
+.step-number {
+    background-color: #fff;
+    color: #664de5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-.container {
-    width: 50%;  
-    padding: 20px;
-    background-color: #4f47c0; 
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: white;
-}
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-}
-label, input, select, textarea {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-}
-input, select, textarea {
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background: #e5e5e5;
-}
-input[type="password"] {
-    background: #ffffff;
-}
-button {
-    background-color: #88e5d9;
-    border: none;
-    border-radius: 25px;
-    padding: 15px 30px;
-    font-size: 1.2rem;
+    margin-right: 10px;
     font-weight: bold;
-    color: #2e2885;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    width: 100%;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: #ffffff; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 40px; 
+}
+
+h2 {
+    color: #333333;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #6b7280; 
+}
+
+.form-group input[type="file"],
+.form-group select,
+.form-group input[type="password"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db; 
+    background-color: #f9fafb; 
+    font-size: 1rem;
+    color: #333333;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input[type="file"]::file-selector-button {
+    padding: 8px;
+    background-color: #6366f1;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.form-group input[type="file"]::file-selector-button:hover {
+    background-color: #4f46e5;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); 
+    outline: none;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.form-group label[for="check"] {
+    display: inline-block;
+    font-weight: normal;
+    color: #333333;
+}
+
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #6366f1; 
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
 button:hover {
-    background-color: #74c9bb; 
+    background-color: #4f46e5; 
 }

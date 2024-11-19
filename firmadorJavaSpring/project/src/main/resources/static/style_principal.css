@@ -1,124 +1,137 @@
-body {
+
+ body {
     font-family: Arial, sans-serif;
-    background-color: #2e2885; 
-    color: white;
+    background-color: #f4f5f7;
+    color: #333;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; 
+    min-height: 100vh;
 }
-.center-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-}
+
 .container {
-    max-width: 800px;
-    padding: 20px;
+    max-width: 900px;
+    padding: 50px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    color: #333;
     text-align: center;
 }
+
+
 .steps {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    color: #b3b3b3;
+    justify-content: space-around;
+    margin-bottom: 40px;
 }
+
 .step {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 15px 30px;
+    font-weight: 600;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 10px; 
 }
+
 .step.active {
-    color: #ffffff;
+    background-color: #664de5;
+    color: #fff;
+    border-color: #664de5;
 }
+
 .step-number {
-    background-color: #9ae3e2; 
-    color: #2e2885;
+    background-color: #fff;
+    color: #664de5;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 15px; 
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
 .step.active .step-number {
-    background-color: #ffffff;
-    color: #2e2885;
+    background-color: #fff;
+    color: #664de5;
 }
-.title {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-.description {
-    font-size: 18px;
-    margin-bottom: 30px;
-    color: #d3d3d3;
-}
-.disclaimer {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 8px;
+
+.form-group {
     margin-bottom: 20px;
-    text-align: left;
-    font-size: 14px;
 }
-.disclaimer ul {
-    list-style-type: none;
-    padding: 0;
+
+label {
+    font-weight: bold;
+    color: #555;
 }
-.disclaimer li::before {
-    content: "•";
-    color: #d3d3d3;
-    padding-right: 10px;
+
+input[type="text"],
+input[type="email"],
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    margin-top: 5px;
+    font-size: 1rem;
+    color: #333;
 }
-.toggle {
-    margin-top: 20px;
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+select:focus {
+    outline: none;
+    border-color: #664de5;
+    background-color: #fff;
 }
-.toggle input {
-    display: none;
+
+
+.title {
+    font-size: 2rem; 
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
 }
-.toggle label {
-    background: #9ae3e2; 
-    border-radius: 20px;
-    cursor: pointer;
-    display: inline-block;
-    height: 24px;
-    position: relative;
-    width: 50px;
+
+
+.description {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 30px;
 }
-.toggle label:after {
-    background: #2e2885; 
-    border-radius: 50%;
-    content: '';
-    height: 20px;
-    left: 2px;
-    position: absolute;
-    top: 2px;
-    width: 20px;
-    transition: all 0.3s;
-}
-.toggle input:checked + label:after {
-    left: 26px;
-    background: #4CAF50; 
-}
+
 .start-button {
-    background-color: #9ae3e2; 
-    border: none;
-    border-radius: 25px;
-    color: #2e2885;
+    background-color: #664de5;
+    color: #fff;
     padding: 15px 30px;
     font-size: 1.2rem;
     font-weight: bold;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
+    margin-top: 20px;
 }
+
 .start-button:hover {
-    background-color: #82c9c8; 
+    background-color: #563dca;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: center;
 }
