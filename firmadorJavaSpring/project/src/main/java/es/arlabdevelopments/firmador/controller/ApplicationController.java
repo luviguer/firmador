@@ -2,6 +2,7 @@ package es.arlabdevelopments.firmador.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.security.Key;
 import java.util.Base64;
 import java.util.logging.Logger;
 
@@ -29,12 +30,12 @@ public class ApplicationController {
 
     @GetMapping("/")
     public String handleInit() {
-        return "index";
+        return "menuPrincipal";
     }
 
     @GetMapping("/startParticipant")
     public String handlePrinicpal() {
-        return "principal";
+        return "incicioDePasos";
     }
 
     
@@ -100,6 +101,12 @@ public class ApplicationController {
     }
 
 
+    @GetMapping("/data")
+    public String handlegetdata() {
+        return "terminosYcondiciones";
+    }
+
+
     
     @PostMapping("/termsAndConditions")
      public String handleTerms( 
@@ -115,6 +122,8 @@ public class ApplicationController {
             String jsonSinProof=faux.generationJSONTerminos(verifiableIdTerminos,credentialSubjectIdTerminos);
             logger.info("json sin proof para la peticion de terminos y condiciones: " + jsonSinProof);
 
+            logger.info("Valor del json sin proof del participante: " + json);
+
 
             model.addAttribute("tYc", jsonSinProof);
             model.addAttribute("verifiableId", verifiableIdTerminos);
@@ -123,6 +132,11 @@ public class ApplicationController {
             return "peticionDatos";
 
      }
+
+    @GetMapping("/termsAndConditions")
+    public String handlegetterimos() {
+        return "peticionDatos";
+    }
 
 
     @PostMapping("/upload")
@@ -151,17 +165,36 @@ public class ApplicationController {
             logger.info("Valor de la contraseña: " + contrasena);
             logger.info("Contenido del fichero: " + Base64.getEncoder().encodeToString(Files.readAllBytes(f.toPath())));
 
-            String privateKey = "-----BEGIN PRIVATE KEY-----" +
-                    Base64.getEncoder().encodeToString(Libreria.clave(alias, contrasena, f).getEncoded()) + "-----END PRIVATE KEY-----";
+            Key clavePrivada = Libreria.clave(alias, contrasena, f);
+            if (clavePrivada == null) {
+                logger.info("No se pudo obtener la clave privada. Verifica el alias y la contraseña.");
 
+                model.addAttribute("jsonResponse", json);
+                model.addAttribute("lrn", credecialNumeroDeRegitro);
+                model.addAttribute("tYc", tYc);
+                model.addAttribute("verifiableIdTerminos", verifiableIdTerminos);
+                model.addAttribute("verifiableIdParticipant", verifiableIdParticipant);
+                model.addAttribute("errorMessage", "Contraseña incorrecta");
+                
+               
+                return "peticionDatos"; 
+            }
+        
+            String privateKey = "-----BEGIN PRIVATE KEY-----" +
+                    Base64.getEncoder().encodeToString(clavePrivada.getEncoded()) +
+                    "-----END PRIVATE KEY-----";
+        
+                    
             logger.info("Valor de la clave privada: " + privateKey);
-            logger.info("Valor del json: " + json);
+            logger.info("Valor del json sin proof del participante: " + json);
 
 
 
             //añado el proof al json de participante
             String dev = p.httpPetition(privateKey, json);
 
+
+            logger.info("Valor del json de terminos y condiciones sin proof: " + tYc);
             //añado el proof al json de terminos y condiciones
             String devTyC_proof=p.httpPetition(privateKey, tYc);
             logger.info("Valor del json de terminos y condiciones con proof: " + devTyC_proof);

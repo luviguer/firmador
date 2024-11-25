@@ -4,30 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Términos y Condiciones</title>
-     
-     <link rel="stylesheet" href="style_terminosYcondiciones.css">
+    <link rel="stylesheet" href="style_terminosYcondiciones.css">
+    <script>
+        // Guardar los datos de los inputs en LocalStorage al escribir
+        function saveToLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                field.addEventListener('input', () => {
+                    localStorage.setItem(field.id, field.value); // Guarda el valor usando el ID como clave
+                });
+            });
 
+            // Guardar valores de los campos ocultos en LocalStorage
+            document.querySelectorAll('input[type="hidden"]').forEach((hiddenField) => {
+                if (hiddenField.value) {
+                    localStorage.setItem(hiddenField.id, hiddenField.value);
+                }
+            });
+        }
+
+        // Cargar los datos de LocalStorage al cargar la página
+        function loadFromLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                const savedValue = localStorage.getItem(field.id);
+                if (savedValue) {
+                    if (field.type === 'checkbox') {
+                        field.checked = savedValue === 'true'; // Para checkbox, guarda el estado como "true" o "false"
+                    } else {
+                        field.value = savedValue; // Asigna el valor guardado
+                    }
+                }
+            });
+
+            // Cargar valores de los campos ocultos desde LocalStorage
+            document.querySelectorAll('input[type="hidden"]').forEach((hiddenField) => {
+                const savedValue = localStorage.getItem(hiddenField.id);
+                if (savedValue) {
+                    hiddenField.value = savedValue;
+                }
+            });
+
+            // Actualizar el estado del botón "Siguiente" si el checkbox ya estaba marcado
+            const agreeCheckbox = document.getElementById('agree');
+            const nextButton = document.getElementById('nextButton');
+            if (agreeCheckbox.checked) {
+                nextButton.classList.remove('disabled');
+                nextButton.disabled = false;
+            }
+        }
+
+        function navigateToStep(stepNumber) {
+            let formAction = "";
+            let previousStep = stepNumber - 1;
+
+            if (localStorage.getItem("step" + stepNumber) !== "true") {
+                // Si el paso no está marcado como completado, mostrar mensaje de error
+                alert("Por favor, complete el paso anterior antes de continuar.");
+                return;  // Detener la ejecución si el paso no está completado
+            }
+
+            // Asignar la URL de acción del formulario según el paso actual
+            if (stepNumber === 1) {
+                formAction = "startParticipant";  
+            } else if (stepNumber === 2) {
+                formAction = "createParticipant";  
+            } else if (stepNumber === 3) {
+                formAction = "data";  // Redirigir al link de "data"
+            } else if (stepNumber === 4) {
+                formAction = "termsAndConditions";  // Redirigir al link de "termsAndConditions"
+            }
+
+            window.location.href = formAction;
+        }
+
+        // Ejecutar las funciones al cargar la página
+        window.onload = function () {
+            loadFromLocalStorage();
+            saveToLocalStorage();
+
+            let activeStepElement = document.querySelector('.step.active');
+    
+            if (activeStepElement) {
+                // Obtener el número del paso activo
+                let currentStep = parseInt(activeStepElement.querySelector('.step-number').innerText);
+                
+                // Marcar el paso activo como completado en localStorage
+                localStorage.setItem("step" + currentStep, "true");
+
+                // (Opcional) También puedes marcar los pasos anteriores como completados
+                for (let i = 1; i <= currentStep; i++) {
+                    localStorage.setItem("step" + i, "true");
+                }
+            }
+
+            console.log(localStorage);
+        };
+    </script>
 </head>
 <body>
     <div class="steps">
-        <div class="step">
+        <div class="step" onclick="navigateToStep(1)">
             <div class="step-number">1</div>
             Start
         </div>
-        <div class="step">
+        <div class="step" onclick="navigateToStep(2)">
             <div class="step-number">2</div>
             Participant & Registration Number
         </div>
-        <div class="step active">
+        <div class="step active" onclick="navigateToStep(3)">
             <div class="step-number">3</div>
             Terms & Conditions
         </div>
-        <div class="step">
+        <div class="step" onclick="navigateToStep(4)">
             <div class="step-number">4</div>
             Sign
         </div>
     </div>
-
     <div class="container">
         <h1>Términos y Condiciones</h1>
         <div class="terms">
@@ -71,9 +162,11 @@
             if (agreeCheckbox.checked) {
                 nextButton.classList.remove('disabled');
                 nextButton.disabled = false;
+                localStorage.setItem('agree', 'true'); // Guardar estado del checkbox
             } else {
                 nextButton.classList.add('disabled');
                 nextButton.disabled = true;
+                localStorage.setItem('agree', 'false'); // Guardar estado del checkbox
             }
         });
     </script>

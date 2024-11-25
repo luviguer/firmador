@@ -5,23 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Estilizado</title>
     <link rel="stylesheet" href="style_formularioParticipante.css">
+    <script>
+        // Función para guardar los datos de los inputs en LocalStorage al escribir o seleccionar
+        function saveToLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                field.addEventListener('input', () => {
+                    if (field.type === 'radio') {
+                        // Si es un radio button, guarda el valor seleccionado con su grupo (name)
+                        if (field.checked) {
+                            localStorage.setItem(field.name, field.value);
+                        }
+                    } else {
+                        // Guarda otros campos usando su ID como clave
+                        localStorage.setItem(field.id, field.value);
+                    }
+                });
+            });
+        }
 
+        // Función para cargar los datos de LocalStorage al cargar la página
+        function loadFromLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                if (field.type === 'radio') {
+                    // Para radio buttons, verifica si su valor coincide con el guardado
+                    const savedValue = localStorage.getItem(field.name);
+                    if (savedValue && field.value === savedValue) {
+                        field.checked = true; // Marca el radio button correspondiente
+                    }
+                } else {
+                    const savedValue = localStorage.getItem(field.id);
+                    if (savedValue) {
+                        field.value = savedValue; // Asigna el valor guardado
+                    }
+                }
+            });
+        }
+
+
+        function navigateToStep(stepNumber) {
+            
+            let formAction = "";
+            let previousStep = stepNumber - 1;
+
+            if (localStorage.getItem("step" + stepNumber) !== "true") {
+            // Si el paso no está marcado como completado, mostrar mensaje de error
+            alert("Por favor, complete el paso anterior antes de continuar.");
+            return;  // Detener la ejecución si el paso no está completado
+            }
+           
+
+            
+            // Asignar la URL de acción del formulario según el paso actual
+            if (stepNumber === 1) {
+                formAction = "startParticipant";  
+            } else if (stepNumber === 2) {
+                formAction = "createParticipant";  
+            } else if (stepNumber === 3) {
+                formAction = "data";  // Redirigir al link de "data"
+            } else if (stepNumber === 4) {
+                formAction = "termsAndConditions";  // Redirigir al link de "termsAndConditions"
+            }
+
+            window.location.href = formAction;
+
+
+         
+        }
+
+
+
+    
+
+        // Ejecutar las funciones al cargar la página
+        window.onload = function () {
+            loadFromLocalStorage();
+            saveToLocalStorage();
+
+            let activeStepElement = document.querySelector('.step.active');
+    
+            if (activeStepElement) {
+                // Obtener el número del paso activo
+                let currentStep = parseInt(activeStepElement.querySelector('.step-number').innerText);
+                
+                // Marcar el paso activo como completado en localStorage
+                localStorage.setItem("step" + currentStep, "true");
+
+                // (Opcional) También puedes marcar los pasos anteriores como completados
+                for (let i = 1; i <= currentStep; i++) {
+                    localStorage.setItem("step" + i, "true");
+                }
+            }
+        };
+    </script>
 </head>
 <body>
     <div class="steps">
-        <div class="step">
+        <div class="step" onclick="navigateToStep(1)">
             <div class="step-number">1</div>
             Start
         </div>
-        <div class="step active">
+        <div class="step active" onclick="navigateToStep(2)">
             <div class="step-number">2</div>
             Participant & Registration Number
         </div>
-        <div class="step">
+        <div class="step" onclick="navigateToStep(3)">
             <div class="step-number">3</div>
             Terms & Conditions
         </div>
-        <div class="step">
+        <div class="step" onclick="navigateToStep(4)">
             <div class="step-number">4</div>
             Sign
         </div>
@@ -39,9 +130,9 @@
             <div class="lrn-group">
                 <label for="registration-number">Legal Registration Number (LRN) *</label>
                 <div class="radio-group">
-                    <label><input type="radio" name="lrn-type" value="EORI" required> EORI</label>
-                    <label><input type="radio" name="lrn-type" value="vatID" required> VAT ID</label>
-                    <label><input type="radio" name="lrn-type" value="leiCode" required> LEI Code</label>
+                    <label><input type="radio" id="lrn-type-eori" name="lrn-type" value="EORI" required> EORI</label>
+                    <label><input type="radio" id="lrn-type-vatID" name="lrn-type" value="vatID" required> VAT ID</label>
+                    <label><input type="radio" id="lrn-type-leiCode" name="lrn-type" value="leiCode" required> LEI Code</label>
                 </div>
                 <input type="text" id="registration-number" name="registration-number" required>
 

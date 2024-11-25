@@ -124,11 +124,20 @@ public class Libreria {
         Key k = null;
         try (FileInputStream fis = new FileInputStream(cert)) {
             KeyStore ks = KeyStore.getInstance("PKCS12");
-            ks.load(fis, null);
+            ks.load(fis, contrasena.toCharArray()); // Se pasa la contraseña aquí
             k = ks.getKey(alias, contrasena.toCharArray());
-            if (!(k instanceof PrivateKey)) return null;
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (!(k instanceof PrivateKey)) {
+                System.err.println("El alias no referencia a una clave privada.");
+                return null;
+            }
+        } catch (IOException e) {
+            System.err.println("Error al leer el archivo del certificado: " + e.getMessage());
+        } catch (KeyStoreException e) {
+            System.err.println("Error con el almacén de claves: " + e.getMessage());
+        } catch (NoSuchAlgorithmException | UnrecoverableKeyException e) {
+            System.err.println("Error al recuperar la clave: Verifica la contraseña o el alias.");
+        } catch (CertificateException e) {
+            System.err.println("Certificado inválido: " + e.getMessage());
         }
         return k;
     }

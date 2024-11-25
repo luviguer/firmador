@@ -10,6 +10,8 @@ body {
     font-family: Arial, sans-serif;
 }
 
+
+
 .main-container {
     display: flex;
     flex-direction: column;
@@ -155,3 +157,4 @@ button {
 button:hover {
     background-color: #4f46e5; 
 }
+

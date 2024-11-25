@@ -89,6 +89,7 @@ public class Peticiones {
             
         }
 
+        
 
         //Peticion para terminos y condiciones y uso la misma para el participante
         public String httpPetitionTerminos(String jsonResponseString,String verifiableId) throws UnsupportedEncodingException {
@@ -111,10 +112,12 @@ public class Peticiones {
                     .post(body)
                     .addHeader("Content-Type", "application/json")  
                     .build();
-
+            
             Response response = null;
             try {
                 response = client.newCall(request).execute();
+
+
             } catch (IOException e) {
                 logger.severe("ha habido un error en al ejecución de la llamada al API");
                 throw new RuntimeException(e);
@@ -129,7 +132,7 @@ public class Peticiones {
             
         }
 
-
+        
 
 
 
