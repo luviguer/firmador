@@ -1,4 +1,3 @@
- /* Estilo del cuerpo */
  body {
     margin: 0;
     padding: 0;
@@ -6,18 +5,17 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    background-color: #f9f9fb; /* Fondo gris claro */
+    background-color: #f9f9fb; 
     font-family: Arial, sans-serif;
 }
 
-/* Estilo de la barra de pasos */
 .steps {
     display: flex;
     justify-content: space-around;
     width: 100%;
     max-width: 800px;
     margin-top: 20px;
-    margin-bottom: 40px; /* Separación con el formulario */
+    margin-bottom: 40px; 
 }
 
 .step {
@@ -30,7 +28,7 @@
     color: #888;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin: 0 10px; /* Espacio entre los pasos */
+    margin: 0 10px; 
     flex: 1;
     justify-content: center;
     text-align: center;
@@ -57,14 +55,13 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Contenedor del formulario */
 .container {
     width: 100%;
     max-width: 600px;
     padding: 30px;
-    background-color: #ffffff; /* Fondo blanco del contenedor */
+    background-color: #ffffff; 
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
     margin-bottom: 40px;
 }
 
@@ -76,7 +73,6 @@ h1 {
     font-weight: 600;
 }
 
-/* Estilos del formulario */
 form {
     display: flex;
     flex-direction: column;

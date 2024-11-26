@@ -9,7 +9,7 @@ services:
       - API_HOST=lucia.arlabdevelopments.com
       - API_PORT=3000
       - API_URI=jws
-      - gx-terms-and-conditions:gaiaxTermsAndConditions=70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700
+      - gx-terms-and-conditions=70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700
       - API_NumRegistration=https://gx-notary.arsys.es/v1/registrationNumberVC?
       - API_TerminosYParticipante=https://compliance.arlabdevelopments.com/v1-staging/api/credential-offers?vcid=
       - issuer_Participant=did:web:gx-notary.arsys.es:v1

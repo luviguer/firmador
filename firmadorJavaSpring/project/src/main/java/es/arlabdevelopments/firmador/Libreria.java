@@ -119,12 +119,13 @@ public class Libreria {
      * @return Un objeto tipo Key en caso de que el fichero y las credenciales
      * referenciasen a una clave privada, en caso de que la clave no fuese
      * correcta o no referenciase a una clave privada devolvera <b>null</b>
+     * LUCIA: AÑADIR QUE HE COMPROBADO QUE LA CONTRASEÑA SEA INCORRECTA 
      */
     public static Key clave(String alias, String contrasena, File cert) {
         Key k = null;
         try (FileInputStream fis = new FileInputStream(cert)) {
             KeyStore ks = KeyStore.getInstance("PKCS12");
-            ks.load(fis, contrasena.toCharArray()); // Se pasa la contraseña aquí
+            ks.load(fis, contrasena.toCharArray()); 
             k = ks.getKey(alias, contrasena.toCharArray());
             if (!(k instanceof PrivateKey)) {
                 System.err.println("El alias no referencia a una clave privada.");

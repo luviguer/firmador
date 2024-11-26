@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifiable Credential Viewer</title>
     
-    <link rel="stylesheet" href="style_muestraJws.css">
+    <link rel="stylesheet" href="./style_muestraJws.css">
 
 
     <script>
+        
         function showJson(tabId) {
             const containers = document.querySelectorAll('.json-container');
             containers.forEach(container => container.classList.remove('active'));
@@ -19,6 +20,7 @@
             document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
         }
 
+        //copiar json
         function copyToClipboard(containerId) {
             const text = document.querySelector(`#${containerId} pre`).textContent;
             navigator.clipboard.writeText(text).then(() => {

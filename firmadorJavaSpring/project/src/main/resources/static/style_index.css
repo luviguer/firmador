@@ -1,4 +1,8 @@
 
+form {
+    margin-bottom: 20px; /* Separa los formularios entre sí */
+}
+
 body {
     margin: 0;
     padding: 0;

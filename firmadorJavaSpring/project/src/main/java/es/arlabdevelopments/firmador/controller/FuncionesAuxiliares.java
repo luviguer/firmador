@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Service
 public class FuncionesAuxiliares {
@@ -180,7 +182,7 @@ public class FuncionesAuxiliares {
             credentialSubject.put("gx:legalRegistrationNumber", Map.of("id", verifiableIdLRN));
             credentialSubject.put("gx:legalAddress", Map.of("gx:countrySubdivisionCode", legalAddress));
             credentialSubject.put("type", "gx:LegalParticipant");
-            credentialSubject.put("gx-terms-and-conditions:gaiaxTermsAndConditions",System.getenv("gx-terms-and-conditions:gaiaxTermsAndConditions")); 
+            credentialSubject.put("gx-terms-and-conditions:gaiaxTermsAndConditions",System.getenv("gx-terms-and-conditions")); 
             credentialSubject.put("id", verifiableSubjectId);
 
             Map<String, Object> mainJson = new LinkedHashMap<>();
@@ -217,6 +219,21 @@ public class FuncionesAuxiliares {
 
             return objectMapper.writeValueAsString(presentation);
 
+    }
+
+
+    //funcion para poner el json bien estructurado y bonito
+     public static String formatJson(String inputJson) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT); 
+
+        try {
+            JsonNode jsonNode = objectMapper.readTree(inputJson);
+
+            return objectMapper.writeValueAsString(jsonNode);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Invalid JSON: " + e.getMessage(), e);
+        }
     }
 
 

@@ -94,42 +94,46 @@ public class Peticiones {
         //Peticion para terminos y condiciones y uso la misma para el participante
         public String httpPetitionTerminos(String jsonResponseString,String verifiableId) throws UnsupportedEncodingException {
 
-
             String encodedString = URLEncoder.encode(verifiableId, StandardCharsets.UTF_8.toString());
 
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json; charset=utf-8");    
-            @SuppressWarnings("deprecation")
-            RequestBody body = RequestBody.create(
-                    MediaType.parse("application/json; charset=utf-8"),
-                    jsonResponseString
-                );
-
-
-
+            RequestBody body = RequestBody.create(mediaType, jsonResponseString);
+        
             Request request = new Request.Builder()
-                    .url(System.getenv("API_TerminosYParticipante")+encodedString)
+                    .url(System.getenv("API_TerminosYParticipante") + encodedString)
                     .post(body)
                     .addHeader("Content-Type", "application/json")  
                     .build();
-            
+        
             Response response = null;
             try {
                 response = client.newCall(request).execute();
-
-
-            } catch (IOException e) {
-                logger.severe("ha habido un error en al ejecución de la llamada al API");
-                throw new RuntimeException(e);
-            }
+                logger.severe("el codigo es: " +response.code() );
         
-            try {
-                        return response.body().string();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }           
-
-            
+                if (!response.isSuccessful()) {
+                    int responseCode = response.code();
+                    String errorMessage = String.format("Error en la llamada a la API. HTTP code: %d, Message: %s",
+                                                        responseCode, response.message());
+                    logger.severe(errorMessage);
+        
+                    if (responseCode == 400) {
+                        logger.severe("Error 400: Invalid JSON request body.");
+                        return "Error 400: Invalid JSON request body.";
+                    } else if (responseCode == 409) {
+                        logger.severe("Error 409: Invalid Participant Self Description.");
+                        return "Error 409: Invalid Participant Self Description.";
+                    }
+        
+                    throw new RuntimeException(errorMessage);
+                }
+        
+                return response.body().string();
+            } catch (IOException e) {
+                logger.severe("ha habido un error en la ejecucion de la llamada a la API: " + e.getMessage());
+                throw new RuntimeException(e);
+            } 
+            }
         }
 
         
@@ -142,4 +146,3 @@ public class Peticiones {
 
 
     
-}

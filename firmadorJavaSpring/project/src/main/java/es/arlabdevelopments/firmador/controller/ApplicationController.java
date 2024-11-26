@@ -63,7 +63,6 @@ public class ApplicationController {
                 
 
         //genero el json para el participante pero aun le falta el proof para enviarlo a la API       
-
         String jsonResponseString = faux.generaionJSONParticipante( verifiableId,  verifiableSubjectId,  legalName, headquarterAddress,  legalAddress, verifiableIdLRN);
         logger.info("Valor de el json para el participante sin proof: " + jsonResponseString);
         model.addAttribute("jsonResponse", jsonResponseString);
@@ -91,9 +90,10 @@ public class ApplicationController {
         }
     
 
-
-        logger.info("Valor de la respuesta a la peticion de numero de registro: " + LRN);
-        model.addAttribute("lrn", LRN);
+        //estructuro bien el json y lo pongo bonito
+        String LRN_beutiful=faux.formatJson(LRN);
+        logger.info("Valor de la respuesta a la peticion de numero de registro: " + LRN_beutiful);
+        model.addAttribute("lrn", LRN_beutiful);
 
 
         return "terminosYcondiciones"; 
@@ -165,26 +165,28 @@ public class ApplicationController {
             logger.info("Valor de la contraseña: " + contrasena);
             logger.info("Contenido del fichero: " + Base64.getEncoder().encodeToString(Files.readAllBytes(f.toPath())));
 
-            Key clavePrivada = Libreria.clave(alias, contrasena, f);
-            if (clavePrivada == null) {
-                logger.info("No se pudo obtener la clave privada. Verifica el alias y la contraseña.");
-
-                model.addAttribute("jsonResponse", json);
-                model.addAttribute("lrn", credecialNumeroDeRegitro);
-                model.addAttribute("tYc", tYc);
-                model.addAttribute("verifiableIdTerminos", verifiableIdTerminos);
-                model.addAttribute("verifiableIdParticipant", verifiableIdParticipant);
-                model.addAttribute("errorMessage", "Contraseña incorrecta");
-                
-               
-                return "peticionDatos"; 
-            }
         
+                //gestiono si la contrasñea es incorrecta
+                Key clavePrivada = Libreria.clave(alias, contrasena, f);
+                if (clavePrivada == null) {
+                    logger.info("No se pudo obtener la clave privada. Verifica el alias y la contraseña.");
+
+                    model.addAttribute("jsonResponse", json);
+                    model.addAttribute("lrn", credecialNumeroDeRegitro);
+                    model.addAttribute("tYc", tYc);
+                    model.addAttribute("verifiableIdTerminos", verifiableIdTerminos);
+                    model.addAttribute("verifiableIdParticipant", verifiableIdParticipant);
+                    model.addAttribute("errorMessage", "Contraseña incorrecta");
+                    
+                
+                    return "peticionDatos"; 
+                }
+        
+
+
             String privateKey = "-----BEGIN PRIVATE KEY-----" +
                     Base64.getEncoder().encodeToString(clavePrivada.getEncoded()) +
-                    "-----END PRIVATE KEY-----";
-        
-                    
+                    "-----END PRIVATE KEY-----";                   
             logger.info("Valor de la clave privada: " + privateKey);
             logger.info("Valor del json sin proof del participante: " + json);
 
@@ -199,21 +201,53 @@ public class ApplicationController {
             String devTyC_proof=p.httpPetition(privateKey, tYc);
             logger.info("Valor del json de terminos y condiciones con proof: " + devTyC_proof);
 
+
             //añado el contexto al json de terminos y condiciones
             String  devTyC_proof_completo=faux.anadirVerifiablePresentattionTyC(devTyC_proof);
+
 
             //llamada a la API para consguir la credencial de terminos y condiciones
             String credencialTerminosYCondiciones=p.httpPetitionTerminos(devTyC_proof_completo,verifiableIdTerminos);
             logger.info("Valor de la credencial de terminos y condicion: " + credencialTerminosYCondiciones);
 
+
+                //compruebo que la llamada para terminos y condiciones ha sido con exito 
+                if (credencialTerminosYCondiciones.contains("Error")) {
+
+                            logger.warning("el error es: "+credencialTerminosYCondiciones);
+                            model.addAttribute("errorMessage", credencialTerminosYCondiciones);
+                            model.addAttribute("jsonResponse", json);
+                            model.addAttribute("lrn", credecialNumeroDeRegitro);
+                            model.addAttribute("tYc", tYc);
+                            model.addAttribute("verifiableIdTerminos", verifiableIdTerminos);
+                            model.addAttribute("verifiableIdParticipant", verifiableIdParticipant);
+                            return "peticionDatos";
+                        }
+
+
             //genero ya el json para el participante uniendolo con las otras dos credenciales
             String jsonParticipante=faux.combineJson( credecialNumeroDeRegitro, devTyC_proof, dev);
             logger.info("Valor del json combine: " + jsonParticipante);
 
+
             //llamada a la API pra conseguir la credencial de participante
             String credencialParticipante=p.httpPetitionTerminos(jsonParticipante,verifiableIdParticipant);
 
+                //compruebo que la llamada para participante ha sido con exito 
+                if (credencialParticipante.contains("Error")) {
+
+                    logger.warning("el error es: "+credencialParticipante);
+                    model.addAttribute("errorMessage", credencialTerminosYCondiciones);
+                    model.addAttribute("jsonResponse", json);
+                    model.addAttribute("lrn", credecialNumeroDeRegitro);
+                    model.addAttribute("tYc", tYc);
+                    model.addAttribute("verifiableIdTerminos", verifiableIdTerminos);
+                    model.addAttribute("verifiableIdParticipant", verifiableIdParticipant);
+                    return "peticionDatos";
+                }
+
         
+
             model.addAttribute("credencialTerminosYCondiciones", credencialTerminosYCondiciones);
             model.addAttribute("credencialParticipante", credencialParticipante);
             model.addAttribute("credecialNumeroDeRegitro", credecialNumeroDeRegitro);

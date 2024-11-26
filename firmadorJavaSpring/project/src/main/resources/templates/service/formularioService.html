@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Estilizado</title>
+    <link rel="stylesheet" href="./style_formularioService.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Create Service Offering</h1>
+
+        <form th:action="@{/data}" method="POST" enctype="multipart/form-data">
+            <!-- Título en negrita -->
+            <label class="form-section-title"><strong>Data Account Export</strong></label>
+
+            <!-- Recuadro gris para los tres select -->
+            <div class="form-group">
+                <div class="form-item">
+                    <label class="form-label">Request Type *</label>
+                    <select name="requestType" id="requestType">
+                        <option value="API">API</option>
+                        <option value="email">Email</option>
+                        <option value="webform">Webform</option>
+                        <option value="unregisteredLetter">Unregistered Letter</option>
+                        <option value="registeredLetter">Registered Letter</option>
+                        <option value="supportCenter">Support Center</option>
+                    </select>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">Access Type *</label>
+                    <select name="accessType" id="accessType">
+                        <option value="physical">Physical</option>
+                        <option value="digital">Digital</option>
+                    </select>
+                </div>
+
+                <div class="form-item">
+                    <label class="form-label">Format Type *</label>
+                    <select name="formatType" id="formatType">
+                        <option value="application/1d-interleaved-parityfec">application/1d-interleaved-parityfec</option>
+                        <option value="application/3gpdash-qoe-report+xml">application/3gpdash-qoe-report+xml</option>
+                        <option value="application/3gppHal+json">application/3gppHal+json</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Recuadro gris para serviceOfferingTermsAndConditions -->
+            <label class="form-section-title">Service Offering Terms and Conditions</label>
+
+            <div class="form-group">
+                <div class="form-item">
+                   
+                    <label for="url">URL (URI) *</label>
+                    <input type="url" name="url" id="url" required>
+
+                    <label for="hash">Hash (String) *</label>
+                    <input type="text" name="hash" id="hash" required>
+                </div>
+            </div>
+
+
+
+            <label class="form-section-title">ProvidedBy</label>
+
+            <div class="form-group">
+                <div class="form-item">
+                   
+                    <label for="url">Registration number *</label>
+                    <input type="text" name="registrationNumber" id="registrationNumber" required>
+
+                    <label for="hash">Legal address*</label>
+                    <input type="text" name="legalAddress" id="legalAddress"  required>
+
+                    <label for="hash">HeadquartersAddress *</label>
+                    <input type="text" name="headquartersAddress" id="headquartersAddress" required>
+
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <button type="submit" class="sendparticipant-button">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>

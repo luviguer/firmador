@@ -1,0 +1,100 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9fb;
+    font-family: Arial, sans-serif;
+}
+
+/* Contenedor principal */
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/* Título principal */
+h1 {
+    color: #333333;
+    font-size: 1.5rem;
+    text-align: left;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Estilo para el título "Data Account Export" */
+.form-section-title {
+    color: #333333;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.form-group {
+    background-color: #f3f4f6;  /* Gris claro, igual que el segundo bloque */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.form-item {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+/* Estilo de inputs */
+input[type="url"], input[type="text"], select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db; /* Gris similar al del segundo bloque */
+    font-size: 16px;
+    margin-bottom: 10px;
+    background-color: #f9fafb;
+    color: #333333;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="url"]:focus, input[type="text"]:focus, select:focus {
+    border-color: #6366f1;  /* Morado igual que el segundo bloque */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+/* Estilo de botones */
+.sendparticipant-button {
+    background-color: #6366f1;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.sendparticipant-button:hover {
+    background-color: #4f46e5;
+}
+
+.sendparticipant-button:active {
+    background-color: #4338ca;
+}

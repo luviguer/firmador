@@ -10,9 +10,14 @@
 <body>
     <div class="container">    
         <h1>FIRMADOR</h1>
-        <form action="/startParticipant" method="GET" enctype="multipart/form-data"> 
+        <form th:action="@{/startParticipant}" method="GET" enctype="multipart/form-data"> 
             <button type="submit" class="participant-button">PARTICIPANT</button>
         </form>
+
+        <form th:action="@{/startServiceOffering}" method="GET" enctype="multipart/form-data"> 
+            <button type="submit" class="participant-button">SERVICE OFFERING</button>
+        </form>
+
     </div>
 </body>
 </html>

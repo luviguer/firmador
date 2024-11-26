@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Términos y Condiciones</title>
-    <link rel="stylesheet" href="style_terminosYcondiciones.css">
+    <link rel="stylesheet" href="./style_terminosYcondiciones.css">
     <script>
         // Guardar los datos de los inputs en LocalStorage al escribir
         function saveToLocalStorage() {
             document.querySelectorAll('input, textarea, select').forEach((field) => {
                 field.addEventListener('input', () => {
-                    localStorage.setItem(field.id, field.value); // Guarda el valor usando el ID como clave
+                    localStorage.setItem(field.id, field.value); 
                 });
             });
 
@@ -28,9 +28,9 @@
                 const savedValue = localStorage.getItem(field.id);
                 if (savedValue) {
                     if (field.type === 'checkbox') {
-                        field.checked = savedValue === 'true'; // Para checkbox, guarda el estado como "true" o "false"
+                        field.checked = savedValue === 'true'; 
                     } else {
-                        field.value = savedValue; // Asigna el valor guardado
+                        field.value = savedValue; 
                     }
                 }
             });
@@ -57,26 +57,25 @@
             let previousStep = stepNumber - 1;
 
             if (localStorage.getItem("step" + stepNumber) !== "true") {
-                // Si el paso no está marcado como completado, mostrar mensaje de error
                 alert("Por favor, complete el paso anterior antes de continuar.");
-                return;  // Detener la ejecución si el paso no está completado
+                return;  
             }
 
-            // Asignar la URL de acción del formulario según el paso actual
+            // Asignar la URL y redirigir
             if (stepNumber === 1) {
                 formAction = "startParticipant";  
             } else if (stepNumber === 2) {
                 formAction = "createParticipant";  
             } else if (stepNumber === 3) {
-                formAction = "data";  // Redirigir al link de "data"
+                formAction = "data";  
             } else if (stepNumber === 4) {
-                formAction = "termsAndConditions";  // Redirigir al link de "termsAndConditions"
+                formAction = "termsAndConditions";  
             }
 
             window.location.href = formAction;
         }
 
-        // Ejecutar las funciones al cargar la página
+        // Ejecutar las funciones al cargar la página y marcar psaos como activos
         window.onload = function () {
             loadFromLocalStorage();
             saveToLocalStorage();
@@ -84,13 +83,10 @@
             let activeStepElement = document.querySelector('.step.active');
     
             if (activeStepElement) {
-                // Obtener el número del paso activo
                 let currentStep = parseInt(activeStepElement.querySelector('.step-number').innerText);
                 
-                // Marcar el paso activo como completado en localStorage
                 localStorage.setItem("step" + currentStep, "true");
 
-                // (Opcional) También puedes marcar los pasos anteriores como completados
                 for (let i = 1; i <= currentStep; i++) {
                     localStorage.setItem("step" + i, "true");
                 }
@@ -162,11 +158,11 @@
             if (agreeCheckbox.checked) {
                 nextButton.classList.remove('disabled');
                 nextButton.disabled = false;
-                localStorage.setItem('agree', 'true'); // Guardar estado del checkbox
+                localStorage.setItem('agree', 'true'); 
             } else {
                 nextButton.classList.add('disabled');
                 nextButton.disabled = true;
-                localStorage.setItem('agree', 'false'); // Guardar estado del checkbox
+                localStorage.setItem('agree', 'false'); 
             }
         });
     </script>
