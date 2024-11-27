@@ -12,7 +12,7 @@
     <div class="container">
         <h1>Create Service Offering</h1>
 
-        <form th:action="@{/data}" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/createService}" method="POST" enctype="multipart/form-data">
             <!-- Título en negrita -->
             <label class="form-section-title"><strong>Data Account Export</strong></label>
 
@@ -81,8 +81,15 @@
                 </div>
             </div>
 
+            
+            <div class="form-item">
+                <label for="verifiable-id">Verifiable Credential ID</label>
+                <input type="text" id="verifiableId" name="verifiableId" required>
 
+                <label for="credential-subject-id">Credential Subject ID</label>
+                <input type="text" id="credentialSubjectId" name="credentialSubjectId" required>
 
+            </div>
 
 
 

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Service
-public class FuncionesAuxiliares {
+public class FuncionesAuxiliares_4Pasos {
     
     
     @Autowired

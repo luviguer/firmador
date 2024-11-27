@@ -20,13 +20,13 @@ import es.arlabdevelopments.firmador.Libreria;
 @Controller
 public class ApplicationController {
 
-    Logger logger = Logger.getLogger("Pruebas SpringBoot");
+    Logger logger = Logger.getLogger("Pruebas SpringBoot 4Pasos");
 
     @Autowired
     private Peticiones p;
 
     @Autowired
-    private FuncionesAuxiliares faux;
+    private FuncionesAuxiliares_4Pasos faux;
 
     @GetMapping("/")
     public String handleInit() {
@@ -35,14 +35,14 @@ public class ApplicationController {
 
     @GetMapping("/startParticipant")
     public String handlePrinicpal() {
-        return "incicioDePasos";
+        return "4pasos/incicioDePasos";
     }
 
     
 
     @GetMapping("/createParticipant")
     public String handleParticipant() {
-        return "formularioParticipante";
+        return "4pasos/formularioParticipante";
     }
 
 
@@ -96,14 +96,14 @@ public class ApplicationController {
         model.addAttribute("lrn", LRN_beutiful);
 
 
-        return "terminosYcondiciones"; 
+        return "4pasos/terminosYcondiciones"; 
       
     }
 
 
     @GetMapping("/data")
     public String handlegetdata() {
-        return "terminosYcondiciones";
+        return "4pasos/terminosYcondiciones";
     }
 
 
@@ -129,13 +129,13 @@ public class ApplicationController {
             model.addAttribute("verifiableId", verifiableIdTerminos);
             model.addAttribute("jsonResponse", json);
             model.addAttribute("lrn", lrnType);
-            return "peticionDatos";
+            return "4pasos/peticionDatos";
 
      }
 
     @GetMapping("/termsAndConditions")
     public String handlegetterimos() {
-        return "peticionDatos";
+        return "4pasos/peticionDatos";
     }
 
 
@@ -179,7 +179,7 @@ public class ApplicationController {
                     model.addAttribute("errorMessage", "Contraseña incorrecta");
                     
                 
-                    return "peticionDatos"; 
+                    return "4pasos/peticionDatos"; 
                 }
         
 
@@ -221,7 +221,7 @@ public class ApplicationController {
                             model.addAttribute("tYc", tYc);
                             model.addAttribute("verifiableIdTerminos", verifiableIdTerminos);
                             model.addAttribute("verifiableIdParticipant", verifiableIdParticipant);
-                            return "peticionDatos";
+                            return "4pasos/peticionDatos";
                         }
 
 
@@ -243,7 +243,7 @@ public class ApplicationController {
                     model.addAttribute("tYc", tYc);
                     model.addAttribute("verifiableIdTerminos", verifiableIdTerminos);
                     model.addAttribute("verifiableIdParticipant", verifiableIdParticipant);
-                    return "peticionDatos";
+                    return "4pasos/peticionDatos";
                 }
 
         
@@ -252,7 +252,7 @@ public class ApplicationController {
             model.addAttribute("credencialParticipante", credencialParticipante);
             model.addAttribute("credecialNumeroDeRegitro", credecialNumeroDeRegitro);
 
-            return "muestraJws"; 
+            return "4pasos/muestraJws"; 
 
 
     }

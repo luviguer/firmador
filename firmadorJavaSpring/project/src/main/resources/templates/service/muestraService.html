@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifiable Credential Viewer</title>
+    
+    <link rel="stylesheet" href="./style_muestraJws.css">
+
+
+    <script>
+        
+    
+
+        //copiar json
+        function copyToClipboard(containerId) {
+            const text = document.querySelector(`#${containerId} pre`).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('JSON copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Tu credenciale verificable</h1>
+
+    <div class="tab-container">
+        <div class="tab active" data-tab="jsonData" onclick="showJson('jsonData')">Service Offering</div>
+        
+    </div>
+
+    <div id="jsonData" class="json-container active">
+        <button onclick="copyToClipboard('jsonData')">Copy JSON</button>
+        <pre th:text="${jsonService}"></pre>
+    </div>
+
+   
+
+</body>
+</html>
