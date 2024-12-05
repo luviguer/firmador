@@ -4,73 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Introduce datos</title>
-    <link rel="stylesheet" href="./style_peticionDatos.css">
-
-    <style>
-        .error-message {
-            background-color: #f8d7da;  
-            color: #721c24;            
-            border: 1px solid #f5c2c7; 
-            padding: 15px;
-            border-radius: 5px;        
-            margin-bottom: 20px;        
-            font-size: 14px;
-            font-weight: bold;
-        }
-    </style>
-    
+    <link rel="stylesheet" href="./style_peticionDatosServicios.css">
 
     <script>
-
-    
-        function visibilidadContrasena() {
-            var contrasena = document.getElementById("contrasena");
-            if (contrasena.type === "password") {
-                contrasena.type = "text";
-            } else {
-                contrasena.type = "password";
+        function cargarCredenciales(tipo) {
+            const select = document.getElementById(`${tipo}Select`);
+            select.innerHTML = "<option value=''>Seleccionar credencial...</option>";
+            
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                const option = document.createElement("option");
+                option.value = key;
+                option.textContent = key;
+                select.appendChild(option);
             }
         }
 
+        function actualizarCredencialSeleccionada(tipo) {
+            const select = document.getElementById(`${tipo}Select`);
+            const selectedKey = select.value;
+            const input = document.getElementById(`${tipo}Input`);
+            const statusContainer = document.getElementById(`${tipo}Status`);
+
+            if (selectedKey) {
+                const credencial = sessionStorage.getItem(selectedKey);
+                input.value = credencial;
+                statusContainer.textContent = "Seleccionado";
+                statusContainer.className = "search-status success";
+            } else {
+                input.value = "";
+                statusContainer.textContent = "No seleccionado";
+                statusContainer.className = "search-status error";
+            }
+        }
     </script>
+
+    <style>
+        .search-box label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #6c757d;
+    }
+
+    #archivo, #contrasena {
+        width: 80%; 
+        max-width: 300px; 
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 5px 15px;
+        font-size: 14px;
+    }
+
+    .search-status {
+        margin-top: 5px;
+        font-size: 14px;
+    }
+    .search-status.success {
+        color: green;
+    }
+    .search-status.error {
+        color: red;
+    }
+
+    .error-message {
+        background-color: #f8d7da;  
+        color: #721c24;            
+        border: 1px solid #f5c2c7; 
+        padding: 15px;
+        border-radius: 5px;        
+        margin-bottom: 20px;        
+        font-size: 14px;
+        font-weight: bold;
+    }
+    select {
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #495057;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    select:hover {
+        border-color: #80bdff;
+    }
+
+    select:focus {
+        border-color: #80bdff;
+        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+    }
+
+    .search-box {
+        margin-top: 20px;
+    }
+
+    .search-row {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+    </style>
 </head>
-<body>
+<body onload="cargarCredenciales('participante'); cargarCredenciales('numeroDeRegistro'); cargarCredenciales('terminosYCondiciones');">
+    <div class="container">
+        <form action="#" th:action="@{/uploadService}" method="POST" enctype="multipart/form-data">
+            <h2>Import signed documents</h2>
 
+            <div class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
-        <div class="container">
-            <form action="#" th:action="@{/uploadService}" method="POST" enctype="multipart/form-data" onsubmit="saveHiddenFieldsToLocalStorage()">
-                <h2>Import signed documents</h2>
+            <div class="form-group">
+                <label for="archivo">Archivo:</label>
+                <input type="file" name="archivo" id="archivo" required />
+            </div>
 
-                <div class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+            <div class="form-group">
+                <label for="seleccion">Alias:</label>
+                <select name="seleccion" id="seleccion" required>
+                    <option value="1">1</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label for="archivo">Archivo:</label>
-                    <input type="file" name="archivo" id="archivo" required />
+            <div class="form-group">
+                <label for="contrasena">Contraseña:</label>
+                <input type="password" name="contrasena" id="contrasena" required />
+                <input type="checkbox" name="check" id="check" onclick="visibilidadContrasena()" />
+                <label for="check"> Mostrar contraseña</label>
+            </div>
+
+            <input type="hidden" id="jsonServices_sinproof" name="jsonServices_sinproof" th:value="${jsonServices_sinproof}" />
+
+            <div class="search-box">
+                <h3>Introduce el resto de tus credenciales</h3>
+            
+                <div class="search-row">
+                    <label for="participanteSelect">Credencial de Participante:</label>
+                    <select id="participanteSelect" onchange="actualizarCredencialSeleccionada('participante')"></select>
                 </div>
-
-                <div class="form-group">
-                    <label for="seleccion">Alias:</label>
-                    <select name="seleccion" id="seleccion" required>
-                        <option value="1">1</option>
-                    </select>
+                <div id="participanteStatus" class="search-status"></div>
+                <input type="hidden" id="participanteInput" name="jsonParticipante" />
+            
+                <div class="search-row">
+                    <label for="numeroDeRegistroSelect">Credencial de Número de Registro:</label>
+                    <select id="numeroDeRegistroSelect" onchange="actualizarCredencialSeleccionada('numeroDeRegistro')"></select>
                 </div>
-
-                <div class="form-group">
-                    <label for="contrasena">Contraseña:</label>
-                    <input type="password" name="contrasena" id="contrasena" required />
+                <div id="numeroDeRegistroStatus" class="search-status"></div>
+                <input type="hidden" id="numeroDeRegistroInput" name="jsonNumeroRegistro" />
+            
+                <div class="search-row">
+                    <label for="terminosYCondicionesSelect">Credencial de Términos y Condiciones:</label>
+                    <select id="terminosYCondicionesSelect" onchange="actualizarCredencialSeleccionada('terminosYCondiciones')"></select>
                 </div>
+                <div id="terminosYCondicionesStatus" class="search-status"></div>
+                <input type="hidden" id="terminosYCondicionesInput" name="jsonTerminosYCondiciones" />
+            </div>
+            
 
-                <div class="form-group">
-                    <input type="checkbox" name="check" id="check" onclick="visibilidadContrasena()" />
-                    <label for="check"> Mostrar contraseña</label>
-                </div>
+            <input type="hidden" id="verifiableId" name="verifiableId" th:value="${verifiableId}" />
 
-                <input type="hidden" id="jsonServices_sinproof" name="jsonServices_sinproof" th:value="${jsonServices_sinproof}" />
-              
-
-                <button type="submit">Crear JWS</button>
-            </form>
-        </div>
+            <button type="submit" style="margin-top: 20px;">Crear JWS</button>
+        </form>
     </div>
 </body>
 </html>

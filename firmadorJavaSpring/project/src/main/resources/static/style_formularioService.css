@@ -1,4 +1,3 @@
-/* Estilos generales */
 body {
     margin: 0;
     padding: 0;
@@ -8,81 +7,102 @@ body {
     min-height: 100vh;
     background-color: #f9f9fb;
     font-family: Arial, sans-serif;
+    font-size: 14px; /* Tamaño de fuente general reducido */
 }
 
 /* Contenedor principal */
 .container {
     width: 100%;
-    max-width: 800px;
-    padding: 20px;
+    max-width: 600px; /* Limita el ancho del formulario */
+    padding: 15px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    margin-bottom: 40px;
+    border-radius: 6px; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+    margin: 20px auto; /* Centra y ajusta márgenes */
 }
 
 /* Título principal */
 h1 {
     color: #333333;
-    font-size: 1.5rem;
+    font-size: 1.25rem; /* Tamaño de fuente más pequeño */
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-weight: 600;
 }
 
 /* Estilo para el título "Data Account Export" */
 .form-section-title {
     color: #333333;
-    font-size: 1rem;
+    font-size: 0.95rem; /* Más pequeño */
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: block;
 }
 
+/* Grupo de formulario */
 .form-group {
-    background-color: #f3f4f6;  /* Gris claro, igual que el segundo bloque */
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    background-color: #f3f4f6;  /* Gris claro */
+    padding: 15px; /* Padding reducido */
+    border-radius: 8px; /* Bordes redondeados más pequeños */
+    margin-bottom: 15px; /* Menor margen inferior */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaciado más pequeño entre elementos */
 }
 
+/* Elementos individuales */
 .form-item {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-label {
     display: block;
     font-weight: 500;
-    margin-bottom: 5px;
+    margin-bottom: 3px; /* Margen reducido */
+    font-size: 0.9rem; /* Fuente más pequeña */
 }
 
-/* Estilo de inputs */
+/* Inputs y selects estándar */
 input[type="url"], input[type="text"], select {
     width: 100%;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #d1d5db; /* Gris similar al del segundo bloque */
-    font-size: 16px;
-    margin-bottom: 10px;
+    max-width: 100%; /* Limita el ancho al contenedor */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total */
+    padding: 8px; /* Altura reducida */
+    border-radius: 4px; 
+    border: 1px solid #d1d5db;
+    font-size: 0.85rem; 
     background-color: #f9fafb;
     color: #333333;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 input[type="url"]:focus, input[type="text"]:focus, select:focus {
-    border-color: #6366f1;  /* Morado igual que el segundo bloque */
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1); /* Reducción del grosor */
     outline: none;
 }
 
-/* Estilo de botones */
+/* Inputs pequeños en columnas */
+.form-row {
+    display: flex;
+    flex-wrap: wrap; /* Permite reorganización en pantallas pequeñas */
+    gap: 15px; /* Espaciado reducido */
+}
+
+.form-row .form-item {
+    flex: 1; /* Los elementos toman el espacio disponible */
+    min-width: 150px; /* Más pequeño */
+}
+
+/* Botón de envío */
 .sendparticipant-button {
     background-color: #6366f1;
     border: none;
-    border-radius: 6px;
-    padding: 12px;
-    font-size: 1rem;
+    border-radius: 4px; /* Bordes más pequeños */
+    padding: 10px; /* Altura reducida */
+    font-size: 0.9rem; /* Fuente más pequeña */
     font-weight: bold;
     color: #ffffff;
     cursor: pointer;

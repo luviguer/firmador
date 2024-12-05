@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -118,6 +121,29 @@ public class FuncionesAuxiliares_Servicios {
                 throw new RuntimeException("Invalid JSON: " + e.getMessage(), e);
             }
         }
+
+
+
+
+        public String combineJson(String json1, String json2, String json3,String json4) throws JsonProcessingException {
+
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            Map<String, Object> cred1 = objectMapper.readValue(json1, Map.class);
+            Map<String, Object> cred2 = objectMapper.readValue(json2, Map.class);
+            Map<String, Object> cred3 = objectMapper.readValue(json3, Map.class);
+            Map<String, Object> cred4 = objectMapper.readValue(json4, Map.class);
+
+
+            Map<String, Object> presentation = new LinkedHashMap<>();
+            presentation.put("@context", "https://www.w3.org/2018/credentials/v1");
+            presentation.put("type", "VerifiablePresentation");
+            presentation.put("verifiableCredential", Arrays.asList(cred1, cred2, cred3, cred4));
+
+            return objectMapper.writeValueAsString(presentation);
+
+    }
 
         
     }

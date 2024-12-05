@@ -4,17 +4,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.security.Key;
 import java.util.Base64;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import es.arlabdevelopments.firmador.Libreria;
 
 @Controller
@@ -231,7 +236,7 @@ public class ApplicationController {
 
 
             //llamada a la API pra conseguir la credencial de participante
-            String credencialParticipante=p.httpPetitionTerminos(jsonParticipante,verifiableIdParticipant);
+            String credencialParticipante=faux.formatJson(dev);
 
                 //compruebo que la llamada para participante ha sido con exito 
                 if (credencialParticipante.contains("Error")) {
@@ -248,15 +253,20 @@ public class ApplicationController {
 
         
 
-            model.addAttribute("credencialTerminosYCondiciones", credencialTerminosYCondiciones);
-            model.addAttribute("credencialParticipante", credencialParticipante);
-            model.addAttribute("credecialNumeroDeRegitro", credecialNumeroDeRegitro);
+
+
+           model.addAttribute("credencialTerminosYCondiciones", faux.formatJson(devTyC_proof));
+           model.addAttribute("credencialParticipante",faux.formatJson(dev) );
+           model.addAttribute("credecialNumeroDeRegitro", credecialNumeroDeRegitro);
 
             return "4pasos/muestraJws"; 
 
 
     }
 
+
+
+    
 
 
 

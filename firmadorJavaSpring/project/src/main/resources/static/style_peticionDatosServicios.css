@@ -1,0 +1,305 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f9f9fb; 
+    font-family: Arial, sans-serif;
+}
+
+
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    width: 100%;
+    max-width: 800px;
+    margin-top: 20px; 
+}
+
+.steps {
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+    margin-bottom: 40px; 
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-weight: 600;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 10px; 
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+}
+
+.step.active {
+    background-color: #6366f1;
+    color: #fff;
+    border-color: #6366f1;
+}
+
+.step-number {
+    background-color: #fff;
+    color: #6366f1;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: #ffffff; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 40px; 
+}
+
+h2 {
+    color: #333333;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #6b7280; 
+}
+
+.form-group input[type="file"],
+.form-group select,
+.form-group input[type="password"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db; 
+    background-color: #f9fafb; 
+    font-size: 1rem;
+    color: #333333;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input[type="file"]::file-selector-button {
+    padding: 8px;
+    background-color: #6366f1;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.form-group input[type="file"]::file-selector-button:hover {
+    background-color: #6366f1;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); 
+    outline: none;
+}
+
+.form-group input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.form-group label[for="check"] {
+    display: inline-block;
+    font-weight: normal;
+    color: #333333;
+}
+
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #6366f1; 
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #6366f1; 
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9fafb;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.search-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.search-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-row input[type="text"] {
+    flex: 3; /* Hace el campo más largo */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f8f8f8;
+}
+
+.search-row input[type="text"]:focus {
+    outline: none;
+    border-color: #6366f1; /* Color morado */
+}
+
+.search-row button {
+    flex: 1; /* Botón más pequeño */
+    padding: 8px 10px;
+    background-color: #6366f1; /* Morado */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-row button:hover {
+    background-color: #6366f1; /* Morado oscuro */
+}
+
+.search-status {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.search-status.success {
+    color: #28a745; /* Verde para encontrado */
+}
+
+.search-status.error {
+    color: #dc3545; /* Rojo para no encontrado */
+}
+
+button[type="submit"] {
+    background-color: #6366f1; /* Morado */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #6366f1; /* Morado oscuro */
+}
+ /* Ajustamos el tamaño de los inputs de archivo y contraseña */
+ #archivo, #contrasena {
+    width: 80%; /* Cambiamos el tamaño para que no sobresalgan */
+    max-width: 300px; /* Limitamos el tamaño máximo */
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Ajustamos el tamaño de los botones */
+button {
+    margin-top: 10px;
+    padding: 5px 15px;
+    font-size: 14px;
+}
+
+/* Mejoramos la visibilidad de los mensajes de estado */
+.search-status {
+    margin-top: 5px;
+    font-size: 14px;
+}
+.search-status.success {
+    color: green;
+}
+.search-status.error {
+    color: red;
+}
+
+.error-message {
+    background-color: #f8d7da;  
+    color: #721c24;            
+    border: 1px solid #f5c2c7; 
+    padding: 15px;
+    border-radius: 5px;        
+    margin-bottom: 20px;        
+    font-size: 14px;
+    font-weight: bold;
+}

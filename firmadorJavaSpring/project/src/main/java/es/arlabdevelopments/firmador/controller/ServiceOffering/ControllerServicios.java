@@ -67,6 +67,7 @@ public class ControllerServicios {
             logger.info("json servicio sin proof" + jsonServices_sinproof);
 
 
+            model.addAttribute("verifiableId", verifiableId);
 
             model.addAttribute("jsonServices_sinproof", jsonServices_sinproof);
 
@@ -82,7 +83,23 @@ public class ControllerServicios {
         @RequestParam("seleccion") String alias,
         @RequestParam("contrasena") String contrasena,
         @RequestParam("jsonServices_sinproof") String jsonServices_sinproof,
+        @RequestParam("jsonParticipante") String jsonParticipante,
+        @RequestParam("jsonNumeroRegistro") String jsonNumeroRegistro,
+        @RequestParam("verifiableId") String verifiableId,
+        @RequestParam("jsonTerminosYCondiciones") String jsonTerminosYCondiciones,
         Model model) throws IOException {
+
+
+            if (jsonParticipante.equals("") | jsonNumeroRegistro.equals("")| jsonTerminosYCondiciones.equals("")) {
+
+                model.addAttribute("errorMessage", "introduce las credenciales");
+                model.addAttribute("jsonServices_sinproof", jsonServices_sinproof);
+                model.addAttribute("jsonParticipante", jsonParticipante);
+                model.addAttribute("jsonNumeroRegistro", jsonNumeroRegistro);
+                model.addAttribute("jsonTerminosYCondiciones", jsonTerminosYCondiciones);
+                model.addAttribute("verifiableId", verifiableId);
+                return "service/peticionDatosServicios";
+            }
 
             
             if (file.isEmpty()) {
@@ -105,7 +122,7 @@ public class ControllerServicios {
 
                     model.addAttribute("jsonServices_sinproof", jsonServices_sinproof);
                    
-                
+                    model.addAttribute("errorMessage", "Contraseña incorrecta");
                     return "service/peticionDatosServicios"; 
                 }
         
@@ -115,7 +132,7 @@ public class ControllerServicios {
                     Base64.getEncoder().encodeToString(clavePrivada.getEncoded()) +
                     "-----END PRIVATE KEY-----";                   
             logger.info("Valor de la clave privada: " + privateKey);
-            logger.info("Valor del json sin proof del participante: " + jsonServices_sinproof);
+            logger.info("Valor del json sin proof del servicios: " + jsonServices_sinproof);
 
 
 
@@ -125,10 +142,37 @@ public class ControllerServicios {
             String jsonServices_connproof_estructurado = fauxService.formatJson(jsonServices_connproof);
 
 
+            //pruebas de como llegan los json
+            logger.info("Valor del json participante: " + jsonParticipante);
+            logger.info("Valor del json numero de registro: " + jsonNumeroRegistro);
+            logger.info("Valor del json terminos y condiciones: " + jsonTerminosYCondiciones);
+
+            String jsonServices=fauxService.combineJson(jsonNumeroRegistro, jsonParticipante, jsonTerminosYCondiciones, jsonServices_connproof_estructurado);
 
 
-           
-            model.addAttribute("jsonService", jsonServices_connproof_estructurado);
+            String jsonServices_estructurado = fauxService.formatJson(jsonServices);
+
+            logger.info("Valor del json servicios combinado: " + jsonServices_estructurado);
+
+            String jsonServiciosCompleto=p.httpPetitionTerminos(jsonServices_estructurado, verifiableId);
+
+
+                //compruebo que la llamada para servicio ha sido con exito 
+                if (jsonServiciosCompleto.contains("Error")) {
+
+                    logger.warning("el error es: "+jsonServiciosCompleto);
+                    model.addAttribute("errorMessage", "introduce de nuevo las credenciales");
+                    model.addAttribute("jsonServices_sinproof", jsonServices_sinproof);
+                    model.addAttribute("jsonParticipante", jsonParticipante);
+                    model.addAttribute("jsonNumeroRegistro", jsonNumeroRegistro);
+                    model.addAttribute("jsonTerminosYCondiciones", jsonTerminosYCondiciones);
+                    model.addAttribute("verifiableId", verifiableId);
+                    return "service/peticionDatosServicios";
+                }
+                        
+            model.addAttribute("jsonService", jsonServiciosCompleto);
+             
+
 
             return "service/muestraService"; 
 

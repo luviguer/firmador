@@ -9,7 +9,6 @@
 
 
     <script>
-        
         function showJson(tabId) {
             const containers = document.querySelectorAll('.json-container');
             containers.forEach(container => container.classList.remove('active'));
@@ -20,7 +19,7 @@
             document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
         }
 
-        //copiar json
+        // Copiar JSON al portapapeles
         function copyToClipboard(containerId) {
             const text = document.querySelector(`#${containerId} pre`).textContent;
             navigator.clipboard.writeText(text).then(() => {
@@ -28,6 +27,25 @@
             }).catch(err => {
                 console.error('Error copying text: ', err);
             });
+        }
+
+        // Guardar JSON en sessionStorage con un nombre personalizado
+        function saveToSessionStorage(containerId) {
+            const text = document.querySelector(`#${containerId} pre`).textContent;
+
+            // Pedir al usuario un nombre para guardar el JSON
+            const storageKey = prompt("Introduce un nombre para guardar este JSON en el Session Storage:", "Nombre_JSON");
+            
+            if (storageKey) {
+                try {
+                    sessionStorage.setItem(storageKey, text);
+                    alert(`JSON saved to sessionStorage under the key "${storageKey}"!`);
+                } catch (err) {
+                    console.error('Error saving JSON to sessionStorage: ', err);
+                }
+            } else {
+                alert("No se ha guardado el JSON porque no se proporcionó un nombre.");
+            }
         }
     </script>
 </head>
@@ -41,19 +59,33 @@
     </div>
 
     <div id="jsonData" class="json-container active">
-        <button onclick="copyToClipboard('jsonData')">Copy JSON</button>
+        <div class="button-container">
+            <button onclick="copyToClipboard('jsonData')">Copy JSON</button>
+            <button onclick="saveToSessionStorage('jsonData')">Guardar</button>
+        </div>
         <pre th:text="${credencialParticipante}"></pre>
     </div>
 
     <div id="jsonLrn" class="json-container">
-        <button onclick="copyToClipboard('jsonLrn')">Copy JSON</button>
+        <div class="button-container">
+            <button onclick="copyToClipboard('jsonLrn')">Copy JSON</button>
+            <button onclick="saveToSessionStorage('jsonLrn')">Guardar</button>
+        </div>
         <pre th:text="${credecialNumeroDeRegitro}"></pre>
     </div>
 
     <div id="jsonTyc" class="json-container">
-        <button onclick="copyToClipboard('jsonTyc')">Copy JSON</button>
+        <div class="button-container">
+            <button onclick="copyToClipboard('jsonTyc')">Copy JSON</button>
+            <button onclick="saveToSessionStorage('jsonTyc')">Guardar</button>
+        </div>
         <pre th:text="${credencialTerminosYCondiciones}"></pre>
     </div>
 
+
+
+    <form th:action="@{/}" method="GET" enctype="multipart/form-data">
+        <button class="inicio" type="submit">Crear Otra Credencial</button>
+    </form>
 </body>
 </html>
