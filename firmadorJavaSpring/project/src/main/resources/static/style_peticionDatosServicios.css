@@ -303,3 +303,127 @@ button {
     font-size: 14px;
     font-weight: bold;
 }
+.search-box label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #6c757d;
+}
+
+#archivo, #contrasena {
+    width: 80%; 
+    max-width: 300px; 
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 5px 15px;
+    font-size: 14px;
+}
+
+.search-status {
+    margin-top: 5px;
+    font-size: 14px;
+}
+.search-status.success {
+    color: green;
+}
+.search-status.error {
+    color: red;
+}
+
+.error-message {
+    background-color: #f8d7da;  
+    color: #721c24;            
+    border: 1px solid #f5c2c7; 
+    padding: 15px;
+    border-radius: 5px;        
+    margin-bottom: 20px;        
+    font-size: 14px;
+    font-weight: bold;
+}
+select {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid#d4c2fc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #495057;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:hover {
+    border-color: #c59cfd; /* Morado al pasar el mouse */
+}
+
+select:focus {
+    border-color:#c59cfd; /* Morado similar */
+    box-shadow: 0px 0px 5px rgba(197, 156, 253, 0.5);
+}
+
+.search-box {
+    margin-top: 20px;
+}
+
+.search-row {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+.steps {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 600px; /* Ajustar al mismo ancho del contenido */
+    margin-top: 20px;
+    margin-bottom: 40px; 
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px; /* Ajustar padding para que sea más compacto */
+    font-weight: 600;
+    border: 2px solid #ccc;
+    border-radius: 15px; /* Ajustar los bordes redondeados */
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 10px; 
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+}
+
+.step.active {
+    background-color: #664de5;
+    color: #fff;
+    border-color: #664de5;
+}
+
+.step-number {
+    background-color: #fff;
+    color: #664de5;
+    border-radius: 50%;
+    width: 30px; /* Reducir el tamaño del círculo */
+    height: 30px; /* Reducir el tamaño del círculo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 0.9rem; /* Reducir el tamaño de la fuente */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

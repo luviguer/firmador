@@ -38,12 +38,21 @@ public class ControllerServicios {
     private Peticiones p;
 
 
+    @GetMapping("/principalService")
+    public String handlePrinicpalServiceindex() {
+        return "service/inicioDePasosService";
+}
+
+
     @GetMapping("/startServiceOffering")
         public String handlePrinicpal() {
             return "service/formularioService";
-        }
+    }
 
-
+    @GetMapping("/createService")
+        public String handleSrviceget() {
+            return "service/formularioService";
+    }
     
 
 
@@ -146,6 +155,54 @@ public class ControllerServicios {
             logger.info("Valor del json participante: " + jsonParticipante);
             logger.info("Valor del json numero de registro: " + jsonNumeroRegistro);
             logger.info("Valor del json terminos y condiciones: " + jsonTerminosYCondiciones);
+
+
+
+
+            //compruebo que sean correctas las credenciales
+            if(!fauxService.esNumeroDeRegistro(jsonNumeroRegistro)){
+
+                model.addAttribute("errorMessage", "introduce una credencial de numero de reguistro valido");
+                model.addAttribute("jsonServices_sinproof", jsonServices_sinproof);
+                model.addAttribute("jsonParticipante", jsonParticipante);
+                model.addAttribute("jsonNumeroRegistro", jsonNumeroRegistro);
+                model.addAttribute("jsonTerminosYCondiciones", jsonTerminosYCondiciones);
+                model.addAttribute("verifiableId", verifiableId);
+                return "service/peticionDatosServicios";
+
+
+            }
+
+
+
+            if(!fauxService.esParticipante(jsonParticipante)){
+
+                model.addAttribute("errorMessage", "introduce una credencial de participante valida");
+                model.addAttribute("jsonServices_sinproof", jsonServices_sinproof);
+                model.addAttribute("jsonParticipante", jsonParticipante);
+                model.addAttribute("jsonNumeroRegistro", jsonNumeroRegistro);
+                model.addAttribute("jsonTerminosYCondiciones", jsonTerminosYCondiciones);
+                model.addAttribute("verifiableId", verifiableId);
+                return "service/peticionDatosServicios";
+
+
+            }
+
+            if(!fauxService.esTerminosYCondiciones(jsonTerminosYCondiciones)){
+
+                model.addAttribute("errorMessage", "introduce una credencial de terminos y condiciones valida");
+                model.addAttribute("jsonServices_sinproof", jsonServices_sinproof);
+                model.addAttribute("jsonParticipante", jsonParticipante);
+                model.addAttribute("jsonNumeroRegistro", jsonNumeroRegistro);
+                model.addAttribute("jsonTerminosYCondiciones", jsonTerminosYCondiciones);
+                model.addAttribute("verifiableId", verifiableId);
+                return "service/peticionDatosServicios";
+
+
+            }
+
+
+
 
             String jsonServices=fauxService.combineJson(jsonNumeroRegistro, jsonParticipante, jsonTerminosYCondiciones, jsonServices_connproof_estructurado);
 

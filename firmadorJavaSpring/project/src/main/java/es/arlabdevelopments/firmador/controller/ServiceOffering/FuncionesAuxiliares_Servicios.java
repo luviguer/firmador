@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+
 @Service
 public class FuncionesAuxiliares_Servicios {
 
@@ -143,6 +144,31 @@ public class FuncionesAuxiliares_Servicios {
 
             return objectMapper.writeValueAsString(presentation);
 
+    }
+
+    public static boolean esNumeroDeRegistro(String jsonString) {
+        // Buscamos si el campo "credentialSubject" contiene el tipo "gx:legalRegistrationNumber"
+        String searchString = "\"type\"\\s*:\\s*\"gx:legalRegistrationNumber\"";
+        
+        // Usamos el método 'matches' con la expresión regular para verificar si el tipo es el correcto
+        return jsonString.matches("(?s).*" + searchString + ".*");
+    }
+
+    public static boolean esParticipante(String jsonString) {
+        // Buscamos si el campo "credentialSubject" contiene "gx:headquarterAddress"
+        String searchString = "\"gx:headquarterAddress\"\\s*:\\s*\\{";
+    
+        // Usamos el método 'matches' para verificar si el JSON contiene "gx:headquarterAddress"
+        return jsonString.matches("(?s).*" + searchString + ".*");
+    }
+
+
+    public static boolean esTerminosYCondiciones(String jsonString) {
+        // Buscamos si el campo "credentialSubject" contiene el tipo "gx:GaiaXTermsAndConditions"
+        String searchString = "\"type\"\\s*:\\s*\"gx:GaiaXTermsAndConditions\"";
+        
+        // Usamos el método 'matches' con la expresión regular para verificar si el tipo es el correcto
+        return jsonString.matches("(?s).*" + searchString + ".*");
     }
 
         

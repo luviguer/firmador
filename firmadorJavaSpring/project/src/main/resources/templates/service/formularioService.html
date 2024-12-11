@@ -4,137 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Estilizado</title>
-    <style>
-/* Estilos generales */
-body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f9f9fb;
-    font-family: Arial, sans-serif;
-    font-size: 14px; /* Tamaño de fuente general reducido */
-}
+    <link rel="stylesheet" href="./style_formularioService.css">
 
-/* Contenedor principal */
-.container {
-    width: 100%;
-    max-width: 600px; /* Limita el ancho del formulario */
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 6px; 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
-    margin: 20px auto; /* Centra y ajusta márgenes */
-}
+    <script>
+            // Función para guardar los datos de los inputs en LocalStorage al escribir o seleccionar
+        function saveToLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                field.addEventListener('input', () => {
+                    if (field.type === 'radio') {
+                        if (field.checked) {
+                            localStorage.setItem(field.name, field.value);
+                        }
+                    } else {
+                        localStorage.setItem(field.id, field.value);
+                    }
+                });
+            });
+        }
 
-/* Título principal */
-h1 {
-    color: #333333;
-    font-size: 1.25rem; /* Tamaño de fuente más pequeño */
-    text-align: left;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
+        // Función para cargar los datos de LocalStorage al cargar la página
+        function loadFromLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                if (field.type === 'radio') {
+                    const savedValue = localStorage.getItem(field.name);
+                    if (savedValue && field.value === savedValue) {
+                        field.checked = true; 
+                    }
+                } else {
+                    const savedValue = localStorage.getItem(field.id);
+                    if (savedValue) {
+                        field.value = savedValue; 
+                    }
+                }
+            });
+        }
 
-/* Estilo para el título "Data Account Export" */
-.form-section-title {
-    color: #333333;
-    font-size: 0.95rem; /* Más pequeño */
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
-}
+        // Asignar la URL y redirigir
+        function navigateToStep(stepNumber) {
+            
+            let formAction = "";
+            let previousStep = stepNumber - 1;
 
-/* Grupo de formulario */
-.form-group {
-    background-color: #f3f4f6;  /* Gris claro */
-    padding: 15px; /* Padding reducido */
-    border-radius: 8px; /* Bordes redondeados más pequeños */
-    margin-bottom: 15px; /* Menor margen inferior */
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Espaciado más pequeño entre elementos */
-}
+            if (localStorage.getItem("step" + stepNumber) !== "true") {
+            // Si el paso no está marcado como completado, mostrar mensaje de error
+            alert("Por favor, complete el paso anterior antes de continuar.");
+            return;  
+            }
+                      
+                        
+            if (stepNumber === 1) {
+                formAction = "principalService";  
+            } else if (stepNumber === 2) {
+                formAction = "startServiceOffering";  
+            } else if (stepNumber ===3) {
+                formAction = "createService";  
+            } 
 
-/* Elementos individuales */
-.form-item {
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-}
 
-.form-label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 3px; /* Margen reducido */
-    font-size: 0.9rem; /* Fuente más pequeña */
-}
+            window.location.href = formAction;
 
-/* Inputs y selects estándar */
-input[type="url"], input[type="text"], select {
-    width: 100%;
-    max-width: 100%; /* Limita el ancho al contenedor */
-    box-sizing: border-box; /* Incluye el padding en el tamaño total */
-    padding: 8px; /* Altura reducida */
-    border-radius: 4px; 
-    border: 1px solid #d1d5db;
-    font-size: 0.85rem; 
-    background-color: #f9fafb;
-    color: #333333;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
 
-input[type="url"]:focus, input[type="text"]:focus, select:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1); /* Reducción del grosor */
-    outline: none;
-}
+         
+        }
 
-/* Inputs pequeños en columnas */
-.form-row {
-    display: flex;
-    flex-wrap: wrap; /* Permite reorganización en pantallas pequeñas */
-    gap: 15px; /* Espaciado reducido */
-}
 
-.form-row .form-item {
-    flex: 1; /* Los elementos toman el espacio disponible */
-    min-width: 150px; /* Más pequeño */
-}
+        // Ejecutar las funciones al cargar la página
+        window.onload = function () {
+            loadFromLocalStorage();
+            saveToLocalStorage();
 
-/* Botón de envío */
-.sendparticipant-button {
-    background-color: #6366f1;
-    border: none;
-    border-radius: 4px; /* Bordes más pequeños */
-    padding: 10px; /* Altura reducida */
-    font-size: 0.9rem; /* Fuente más pequeña */
-    font-weight: bold;
-    color: #ffffff;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    width: 100%;
-    text-align: center;
-}
+            let activeStepElement = document.querySelector('.step.active');
+    
+            // Marcar el paso activo como completado en localStorage
+            if (activeStepElement) {
+                let currentStep = parseInt(activeStepElement.querySelector('.step-number').innerText);
+                localStorage.setItem("step" + currentStep, "true");
 
-.sendparticipant-button:hover {
-    background-color: #4f46e5;
-}
+                for (let i = 1; i <= currentStep; i++) {
+                    localStorage.setItem("step" + i, "true");
+                }
+            }
+        };
+    </script>
 
-.sendparticipant-button:active {
-    background-color: #4338ca;
-}
 
-    </style>
+
+
 </head>
 <body>
+    <div class="steps">
+        <div class="step" onclick="navigateToStep(1)">
+            <div class="step-number">1</div>
+            Start
+        </div>
+        <div class="step active" onclick="navigateToStep(2)">
+            <div class="step-number" >2</div>
+            Service Offering
+        </div>
+        <div class="step" onclick="navigateToStep(3)">
+            <div class="step-number">3</div>
+            Sign
+        </div>
+        
+    </div>
     <div class="container">
         <h1>Create Service Offering</h1>
 
         <form th:action="@{/createService}" method="POST" enctype="multipart/form-data">
-            <!-- Título: Data Account Export -->
             <label class="form-section-title">Data Account Export</label>
             <div class="form-group">
                 <div class="form-item">
@@ -165,7 +141,6 @@ input[type="url"]:focus, input[type="text"]:focus, select:focus {
                 </div>
             </div>
 
-            <!-- Service Offering Terms and Conditions -->
             <label class="form-section-title">Service Offering Terms and Conditions</label>
             <div class="form-group">
                 <div class="form-item">
@@ -178,7 +153,6 @@ input[type="url"]:focus, input[type="text"]:focus, select:focus {
                 </div>
             </div>
 
-            <!-- ProvidedBy -->
             <label class="form-section-title">ProvidedBy</label>
             <div class="form-group">
                 <div class="form-item">

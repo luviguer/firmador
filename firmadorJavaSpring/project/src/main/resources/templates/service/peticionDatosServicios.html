@@ -37,91 +37,115 @@
                 statusContainer.className = "search-status error";
             }
         }
+        function saveToLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                field.addEventListener('input', () => {
+                    localStorage.setItem(field.id, field.value); 
+                });
+            });
+
+            // Guardar valores de los campos ocultos en LocalStorage
+            document.querySelectorAll('input[type="hidden"]').forEach((hiddenField) => {
+                if (hiddenField.value) {
+                    localStorage.setItem(hiddenField.id, hiddenField.value);
+                }
+            });
+        }
+
+        // Cargar los datos de LocalStorage al cargar la página
+        function loadFromLocalStorage() {
+            document.querySelectorAll('input, textarea, select').forEach((field) => {
+                const savedValue = localStorage.getItem(field.id);
+                if (savedValue) {
+                    if (field.type === 'checkbox') {
+                        field.checked = savedValue === 'true'; 
+                    } else {
+                        field.value = savedValue;
+                    }
+                }
+            });
+
+            // Cargar valores de los campos ocultos desde LocalStorage
+            document.querySelectorAll('input[type="hidden"]').forEach((hiddenField) => {
+                const savedValue = localStorage.getItem(hiddenField.id);
+                if (savedValue) {
+                    hiddenField.value = savedValue;
+                }
+            });
+
+            
+        }
+
+        function navigateToStep(stepNumber) {
+            let formAction = "";
+            let previousStep = stepNumber - 1;
+
+            if (localStorage.getItem("step" + stepNumber) !== "true") {
+                alert("Por favor, complete el paso anterior antes de continuar.");
+                return;  
+            }
+            if (stepNumber === 1) {
+                formAction = "principalService";  
+            } else if (stepNumber === 2) {
+                formAction = "startServiceOffering";  
+            } else if (stepNumber ===3) {
+                formAction = "createService";  
+            } 
+
+            window.location.href = formAction;
+        }
+
+        // Ejecutar las funciones al cargar la página y marco el paso como activo
+        window.onload = function () {
+            loadFromLocalStorage();
+            saveToLocalStorage();
+
+            let activeStepElement = document.querySelector('.step.active');
+    
+            if (activeStepElement) {
+                let currentStep = parseInt(activeStepElement.querySelector('.step-number').innerText);
+                
+                localStorage.setItem("step" + currentStep, "true");
+
+                for (let i = 1; i <= currentStep; i++) {
+                    localStorage.setItem("step" + i, "true");
+                }
+            }
+        };
+
+        function visibilidadContrasena() {
+            var contrasena = document.getElementById("contrasena");
+            if (contrasena.type === "password") {
+                contrasena.type = "text";
+            } else {
+                contrasena.type = "password";
+            }
+        }
     </script>
 
-    <style>
-        .search-box label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-        color: #6c757d;
-    }
-
-    #archivo, #contrasena {
-        width: 80%; 
-        max-width: 300px; 
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    button {
-        margin-top: 10px;
-        padding: 5px 15px;
-        font-size: 14px;
-    }
-
-    .search-status {
-        margin-top: 5px;
-        font-size: 14px;
-    }
-    .search-status.success {
-        color: green;
-    }
-    .search-status.error {
-        color: red;
-    }
-
-    .error-message {
-        background-color: #f8d7da;  
-        color: #721c24;            
-        border: 1px solid #f5c2c7; 
-        padding: 15px;
-        border-radius: 5px;        
-        margin-bottom: 20px;        
-        font-size: 14px;
-        font-weight: bold;
-    }
-    select {
-        width: 100%;
-        max-width: 400px;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ced4da;
-        border-radius: 5px;
-        background-color: #fff;
-        color: #495057;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-        outline: none;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    select:hover {
-        border-color: #80bdff;
-    }
-
-    select:focus {
-        border-color: #80bdff;
-        box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
-    }
-
-    .search-box {
-        margin-top: 20px;
-    }
-
-    .search-row {
-        margin-bottom: 20px;
-    }
-
-    label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-    }
-    </style>
+   
 </head>
+
 <body onload="cargarCredenciales('participante'); cargarCredenciales('numeroDeRegistro'); cargarCredenciales('terminosYCondiciones');">
+    
+    <div class="steps">
+        <div class="step" onclick="navigateToStep(1)">
+            <div class="step-number">1</div>
+            Start
+        </div>
+        <div class="step" onclick="navigateToStep(2)">
+            <div class="step-number" >2</div>
+            Service Offering
+        </div>
+        <div class="step active" onclick="navigateToStep(3)">
+            <div class="step-number">3</div>
+            Sign
+        </div>
+        
+    </div>
+    
+    
+    
     <div class="container">
         <form action="#" th:action="@{/uploadService}" method="POST" enctype="multipart/form-data">
             <h2>Import signed documents</h2>
@@ -173,7 +197,6 @@
                 <div id="terminosYCondicionesStatus" class="search-status"></div>
                 <input type="hidden" id="terminosYCondicionesInput" name="jsonTerminosYCondiciones" />
             </div>
-            
 
             <input type="hidden" id="verifiableId" name="verifiableId" th:value="${verifiableId}" />
 

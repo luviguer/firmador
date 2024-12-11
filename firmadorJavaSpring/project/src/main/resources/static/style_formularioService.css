@@ -7,50 +7,48 @@ body {
     min-height: 100vh;
     background-color: #f9f9fb;
     font-family: Arial, sans-serif;
-    font-size: 14px; /* Tamaño de fuente general reducido */
+    font-size: 14px; 
+    color: #6b7280; /* Texto en gris por defecto */
 }
 
-/* Contenedor principal */
 .container {
     width: 100%;
-    max-width: 600px; /* Limita el ancho del formulario */
+    max-width: 600px; 
     padding: 15px;
     background-color: #ffffff;
     border-radius: 6px; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
-    margin: 20px auto; /* Centra y ajusta márgenes */
+    margin: 20px auto; 
 }
 
-/* Título principal */
+h1, h2, h3, h4, h5, h6 {
+    color: #333333; /* Títulos en negro o gris oscuro */
+}
+
 h1 {
-    color: #333333;
-    font-size: 1.25rem; /* Tamaño de fuente más pequeño */
+    font-size: 1.25rem; 
     text-align: left;
     margin-bottom: 15px;
     font-weight: 600;
 }
 
-/* Estilo para el título "Data Account Export" */
 .form-section-title {
-    color: #333333;
-    font-size: 0.95rem; /* Más pequeño */
+    color: #6b7280; /* Texto gris */
+    font-size: 0.95rem; 
     font-weight: bold;
     margin-bottom: 10px;
     display: block;
 }
 
-/* Grupo de formulario */
 .form-group {
-    background-color: #f3f4f6;  /* Gris claro */
-    padding: 15px; /* Padding reducido */
-    border-radius: 8px; /* Bordes redondeados más pequeños */
-    margin-bottom: 15px; /* Menor margen inferior */
+    background-color: #f3f4f6; 
+    border-radius: 8px; 
+    margin-bottom: 15px; 
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espaciado más pequeño entre elementos */
+    gap: 10px; 
 }
 
-/* Elementos individuales */
 .form-item {
     margin-bottom: 10px;
     display: flex;
@@ -60,16 +58,16 @@ h1 {
 .form-label {
     display: block;
     font-weight: 500;
-    margin-bottom: 3px; /* Margen reducido */
-    font-size: 0.9rem; /* Fuente más pequeña */
+    margin-bottom: 3px; 
+    font-size: 0.9rem; 
+    color: #6b7280; /* Texto gris */
 }
 
-/* Inputs y selects estándar */
 input[type="url"], input[type="text"], select {
     width: 100%;
-    max-width: 100%; /* Limita el ancho al contenedor */
-    box-sizing: border-box; /* Incluye el padding en el tamaño total */
-    padding: 8px; /* Altura reducida */
+    max-width: 100%;
+    box-sizing: border-box; 
+    padding: 8px; 
     border-radius: 4px; 
     border: 1px solid #d1d5db;
     font-size: 0.85rem; 
@@ -80,29 +78,27 @@ input[type="url"], input[type="text"], select {
 
 input[type="url"]:focus, input[type="text"]:focus, select:focus {
     border-color: #6366f1;
-    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1); /* Reducción del grosor */
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1); 
     outline: none;
 }
 
-/* Inputs pequeños en columnas */
 .form-row {
     display: flex;
-    flex-wrap: wrap; /* Permite reorganización en pantallas pequeñas */
-    gap: 15px; /* Espaciado reducido */
+    flex-wrap: wrap; 
+    gap: 15px; 
 }
 
 .form-row .form-item {
-    flex: 1; /* Los elementos toman el espacio disponible */
-    min-width: 150px; /* Más pequeño */
+    flex: 1;
+    min-width: 150px; 
 }
 
-/* Botón de envío */
 .sendparticipant-button {
     background-color: #6366f1;
     border: none;
-    border-radius: 4px; /* Bordes más pequeños */
-    padding: 10px; /* Altura reducida */
-    font-size: 0.9rem; /* Fuente más pequeña */
+    border-radius: 4px; 
+    padding: 10px; 
+    font-size: 0.9rem; 
     font-weight: bold;
     color: #ffffff;
     cursor: pointer;
@@ -117,4 +113,49 @@ input[type="url"]:focus, input[type="text"]:focus, select:focus {
 
 .sendparticipant-button:active {
     background-color: #4338ca;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-weight: 600;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    color: #6b7280; /* Texto gris */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 10px; 
+}
+
+.step.active {
+    background-color: #664de5;
+    color: #fff;
+    border-color: #664de5;
+}
+
+.step-number {
+    background-color: #fff;
+    color: #664de5;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px; 
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.step.active .step-number {
+    background-color: #fff;
+    color: #664de5;
 }
