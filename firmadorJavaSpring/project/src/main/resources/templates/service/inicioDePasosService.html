@@ -82,11 +82,19 @@
                     Siga los pasos para emitir la credencial Service Offering, para ello vas a necesitar tener la de participante, numero de registro legal y la de terminos y cndiciones
                 </div>
                 
-                <div class="button-container">
-                    <button type="submit" class="start-button">START</button>
+                <div class="buttons-wrapper">
+                    <form th:action="@{/startServiceOffering}" method="GET" enctype="multipart/form-data"> 
+                        <button type="submit" class="start-button">START</button>
+                    </form>
+                
+                    <form th:action="@{/}" method="GET" enctype="multipart/form-data">
+                        <button type="submit" class="start-button secondary-button">IR A LA PAGINA PRINCIPAL</button>
+                    </form>
                 </div>
             </div>
         </div>
     </form>
+
+    
 </body>
 </html>

@@ -113,6 +113,13 @@ select:focus {
     margin-bottom: 30px;
 }
 
+.buttons-wrapper {
+    display: flex;
+    justify-content: center; /* Centra los botones */
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 20px; /* Añade margen superior si es necesario */
+}
+
 .start-button {
     background-color: #664de5;
     color: #fff;
@@ -123,15 +130,16 @@ select:focus {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 20px;
 }
 
 .start-button:hover {
     background-color: #563dca;
 }
 
+.secondary-button {
+    background-color: #aaa; /* Cambia el color si lo necesitas */
+}
 
-.button-container {
-    display: flex;
-    justify-content: center;
+.secondary-button:hover {
+    background-color: #888; /* Color hover para el botón secundario */
 }
