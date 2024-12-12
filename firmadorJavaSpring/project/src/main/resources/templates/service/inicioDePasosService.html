@@ -83,13 +83,15 @@
                 </div>
                 
                 <div class="buttons-wrapper">
+
+                    <form th:action="@{/}" method="GET" enctype="multipart/form-data">
+                        <button type="submit" class="start-button secondary-button">IR A LA PAGINA PRINCIPAL</button>
+                    </form>
                     <form th:action="@{/startServiceOffering}" method="GET" enctype="multipart/form-data"> 
                         <button type="submit" class="start-button">START</button>
                     </form>
                 
-                    <form th:action="@{/}" method="GET" enctype="multipart/form-data">
-                        <button type="submit" class="start-button secondary-button">IR A LA PAGINA PRINCIPAL</button>
-                    </form>
+                    
                 </div>
             </div>
         </div>

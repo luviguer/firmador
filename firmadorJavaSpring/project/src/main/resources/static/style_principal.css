@@ -137,9 +137,9 @@ select:focus {
 }
 
 .secondary-button {
-    background-color: #aaa; /* Cambia el color si lo necesitas */
+    background-color: #664de5; /* Cambia el color si lo necesitas */
 }
 
 .secondary-button:hover {
-    background-color: #888; /* Color hover para el botón secundario */
+    background-color: #563dca; /* Color hover para el botón secundario */
 }
